@@ -1,0 +1,7 @@
+{
+  "name": "efacm",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
