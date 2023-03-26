@@ -8,14 +8,74 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
 
   <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+
+<div class="Upper-part">
+  <ion-item lines="full">
+  <ion-grid [fixed]="true">
+    <ion-row>
+      <ion-col>
+        <ion-select interface="popover" placeholder="2023" >
+          <div *ngFor="let date of calender">
+            <ion-select-option value="{{date.year}}">{{date.year}}</ion-select-option>
+          </div>
+        </ion-select>
+      </ion-col>
+      <ion-col>
+        <ion-select interface="popover" placeholder="month" >
+          <div *ngFor="let date of calender">
+            <ion-select-option value="{{date.months}}">{{date.months}}</ion-select-option>
+          </div>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>Date</ion-col>
+      <ion-col>Breakfast</ion-col>
+      <ion-col>Lunch</ion-col>
+      <ion-col>Dinner</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="calendar-outline"></ion-icon>
+      </ion-col>
+      <ion-col>
+        0
+      </ion-col>
+      <ion-col>
+        0
+      </ion-col>
+      <ion-col>
+        0
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-item>
+</div>
+
+
+<div class="Lower-part">
+  <ion-grid [fixed]="true"  >
+    <ion-row>
+      <ion-col>01 Wed</ion-col>
+      <ion-col>
+        <ion-checkbox></ion-checkbox>
+      </ion-col>
+      <ion-col>
+        <ion-checkbox></ion-checkbox>
+      </ion-col>
+      <ion-col>
+        <ion-checkbox></ion-checkbox>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</div>
+
+    <!-- <strong class="capitalize">{{ folder }}</strong> -->
+    <!-- <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
   </div>
 </ion-content>

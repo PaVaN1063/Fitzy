@@ -1,5 +1,5 @@
 ion-menu-button {
-  color: var(--ion-color-primary);
+  color: var(--ion-color-dark);
 }
 
 #container {
@@ -7,22 +7,21 @@ ion-menu-button {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  // top: 50%;
+  // transform: translateY(-50%);
+}
+// .upper-part{
+//   position: relative;
+// border-bottom: 1px solid grey !important;
+
+// }
+ion-checkbox {
+  --size: 32px;
+  --background-checked: #2b88ec;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-checkbox::part(container) {
+  border-radius: 4px;
+  border: 2px solid #157dec;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
