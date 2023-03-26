@@ -366,5 +366,12 @@ core/css/
 $RECYCLE.BIN/
 
 #*****************************************
-
+/typings
+/.idea
+/dist
+/aot
+.angular
+/platforms
+/plugins
+/www
 
