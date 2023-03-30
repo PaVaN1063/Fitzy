@@ -10,7 +10,11 @@ const routes: Routes = [
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  },  {
+    path: 'ion-refresher',
+    loadChildren: () => import('./ionic-Components/ion-refresher/ion-refresher.module').then( m => m.IonRefresherPageModule)
   }
+
 ];
 
 @NgModule({
