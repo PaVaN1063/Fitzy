@@ -1,127 +1,126 @@
-{
-    "date": [
+
         {
            "april":[
             
                 {
-                    "id": 1,
-                    "day": "Saturday"
+                    "id": "01",
+                    "day": "Sat"
                   },
                   {
-                    "id": 2,
-                    "day": "Sunday"
+                    "id": "02",
+                    "day": "Sun"
                   },
                   {
-                    "id": 3,
-                    "day": "Monday"
+                    "id": "03",
+                    "day": "Mon"
                   },
                   {
-                    "id": 4,
-                    "day": "Tuesday"
+                    "id": "04",
+                    "day": "Tue"
                   },
                   {
-                    "id": 5,
-                    "day": "Wednesday"
+                    "id": "05",
+                    "day": "Wed"
                   },
                   {
-                    "id": 6,
-                    "day": "Thursday"
+                    "id": "06",
+                    "day": "Thu"
                   },
                   {
-                    "id": 7,
-                    "day": "Friday"
+                    "id": "07",
+                    "day": "Fri"
                   },
                   {
-                    "id": 8,
-                    "day": "Saturday"
+                    "id": "08",
+                    "day": "Sat"
                   },
                   {
-                    "id": 9,
-                    "day": "Sunday"
+                    "id": "09",
+                    "day": "Sun"
                   },
                   {
                     "id": 10,
-                    "day": "Monday"
+                    "day": "Mon"
                   },
                   {
                     "id": 11,
-                    "day": "Tuesday"
+                    "day": "Tue"
                   },
                   {
                     "id": 12,
-                    "day": "Wednesday"
+                    "day": "Wed"
                   },
                   {
                     "id": 13,
-                    "day": "Thursday"
+                    "day": "Thu"
                   },
                   {
                     "id": 14,
-                    "day": "Friday"
+                    "day": "Fri"
                   },
                   {
                     "id": 15,
-                    "day": "Saturday"
+                    "day": "Sat"
                   },
                   {
                     "id": 16,
-                    "day": "Sunday"
+                    "day": "Sun"
                   },
                   {
                     "id": 17,
-                    "day": "Monday"
+                    "day": "Mon"
                   },
                   {
                     "id": 18,
-                    "day": "Tuesday"
+                    "day": "Tue"
                   },
                   {
                     "id": 19,
-                    "day": "Wednesday"
+                    "day": "Wed"
                   },
                   {
                     "id": 20,
-                    "day": "Thursday"
+                    "day": "Thu"
                   },
                   {
                     "id": 21,
-                    "day": "Friday"
+                    "day": "Fri"
                   },
                   {
                     "id": 22,
-                    "day": "Saturday"
+                    "day": "Sat"
                   },
                   {
                     "id": 23,
-                    "day": "Sunday"
+                    "day": "Sun"
                   },
                   {
                     "id": 24,
-                    "day": "Monday"
+                    "day": "Mon"
                   },
                   {
                     "id": 25,
-                    "day": "Tuesday"
+                    "day": "Tue"
                   },
                   {
                     "id": 26,
-                    "day": "Wednesday"
+                    "day": "Wed"
                   },
                   {
                     "id": 27,
-                    "day": "Thursday"
+                    "day": "Thu"
                   },
                   {
                     "id": 28,
-                    "day": "Friday"
+                    "day": "Fri"
                   },
                   {
                     "id": 29,
-                    "day": "Saturday"
+                    "day": "Sat"
                   },
                   {
                     "id": 30,
-                    "day": "Sunday"
+                    "day": "Sun"
                   }
                   
 
@@ -129,6 +128,3 @@
         ]
     }
 
-    ]
-    
-}

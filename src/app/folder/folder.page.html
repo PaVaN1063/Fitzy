@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true">
 
 
-  <div id="container">
+  <!-- <div id="container">
 
 <div class="Upper-part">
   <ion-item lines="full">
@@ -58,9 +58,9 @@
 
 
 <div class="Lower-part">
-  <ion-grid [fixed]="true"  >
+  <ion-grid [fixed]="true"  *ngFor="let date of dates">
     <ion-row>
-      <ion-col>01 Wed</ion-col>
+      <ion-col>{{date.id}} {{date.day}}</ion-col>
       <ion-col>
         <ion-checkbox></ion-checkbox>
       </ion-col>
@@ -75,7 +75,18 @@
   
 </div>
 
+
+
+
+
+
+
+</div> -->
+
+
+
+
+<!-- <img src="" -->
     <!-- <strong class="capitalize">{{ folder }}</strong> -->
     <!-- <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
-  </div>
 </ion-content>
