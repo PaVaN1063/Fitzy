@@ -13,6 +13,17 @@ export class FolderPage implements OnInit {
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
+
+    this.dates.get('date').subscribe((res: any) =>{
+      console.log(res)
+    })
   }
   calender: any=[];
+
+  dates: any=[];
+
+  month(){
+
+  }
+
 }
