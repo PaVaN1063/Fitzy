@@ -3,7 +3,18 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <!-- <ion-avatar>
+      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    </ion-avatar> -->
+    <div class="header-text">
     <ion-title>{{ folder }}</ion-title>
+    <ion-title size="small" class="sub-title">TitleTitleTitleTitleTitle</ion-title>
+    </div>
+    
+<div slot="end" class="scan-qr">
+    <ion-icon  color="primary" size="large" name="scan-outline"></ion-icon><br>
+    <ion-label color="primary"  >Scan QR</ion-label>
+  </div>
   </ion-toolbar>
 </ion-header>
 

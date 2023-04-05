@@ -1,3 +1,23 @@
+ion-toolbar{
+  background-color: rgb(255, 255, 255);
+  box-shadow: 1px 3px 5px #ababab;  
+}
+.sub-title{
+  position: relative;
+  top: 3vh;
+}
+
+.header-text{
+  position: relative;
+  text-align: justify;
+}
+.scan-qr{
+  position: relative;
+text-align: center;
+ion-label{
+  font-size: small;
+}
+}
 ion-menu-button {
   color: var(--ion-color-dark);
 }
@@ -27,4 +47,11 @@ ion-checkbox::part(container) {
 
 .popup-container.popup {
   width: 350px;
+}
+
+ion-avatar{
+  position: relative;
+  left: 5vh;
+  height: 35px;
+  width: 35px;
 }
