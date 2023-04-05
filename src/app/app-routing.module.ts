@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'ion-refresher',
     loadChildren: () => import('./ionic-Components/ion-refresher/ion-refresher.module').then( m => m.IonRefresherPageModule)
+  },  {
+    path: 'ion-modal',
+    loadChildren: () => import('./ionic-Components/ion-modal/ion-modal.module').then( m => m.IonModalPageModule)
   }
+
 
 ];
 

@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
 
-
+<ion-button  (click)="openModal()">Open Modal</ion-button>
   <!-- <div id="container">
 
 <div class="Upper-part">
@@ -62,13 +62,13 @@
     <ion-row>
       <ion-col>{{date.id}} {{date.day}}</ion-col>
       <ion-col>
-        <ion-checkbox></ion-checkbox>
+        <ion-checkbox (click)="openModal()"></ion-checkbox>
       </ion-col>
       <ion-col>
-        <ion-checkbox></ion-checkbox>
+        <ion-checkbox (click)="openModal()"></ion-checkbox>
       </ion-col>
       <ion-col>
-        <ion-checkbox></ion-checkbox>
+        <ion-checkbox (click)="openModal()"></ion-checkbox>
       </ion-col>
     </ion-row>
   </ion-grid>
