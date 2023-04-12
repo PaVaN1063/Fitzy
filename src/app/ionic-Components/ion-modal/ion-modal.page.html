@@ -25,14 +25,13 @@
       <!-- <ion-col></ion-col> -->
       <ion-col>
             <ion-avatar>
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar>
+             <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ion-avatar>
       </ion-col>
       <ion-col>
-        <ion-row>FN</ion-row>
+        <!-- <ion-row>FN</ion-row>
         <ion-row>LN</ion-row>
-        <ion-row>Num | O</ion-row>
-
+        <ion-row>Num | O</ion-row> -->
       </ion-col>
     </ion-row>
 
@@ -46,29 +45,30 @@
     <ion-row>
       <ion-col>
         <div class="ion-text-center">
-          <h3>25</h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac vehicula lorem.
+          <!-- <h3>25</h3>
+         Mar 2023 [Saturday]
+         <p >01:15:44 PM</p> -->
+<p>{{todayDate | date: "EEE dd MMM yyyy"}}</p>
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <div class="ion-text-center">
-        <h3>text-center</h3>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac vehicula lorem.
-      </div>
-    </ion-col>
-    </ion-row>
+
     <ion-row>
       <ion-col>
         
         <div class="ion-text-center">
-          <h3>text-center</h3>
-          4-Button-Box
+       
+          <!-- <ion-button id="Food-Button">Text</ion-button> -->
         </div>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <!-- <ion-button id="button"  expand="block" (click)="cancel()">Click</ion-button>        -->
+      </div>
+    </ion-col>
+    </ion-row>
   </ion-grid>
 </div>
-<ion-button  expand="block" (click)="cancel()">Click</ion-button>
 </ion-content>
