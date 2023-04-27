@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>delivery-steps</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="status-card">
+    <h4>Status</h4>
+    
+    <div class="stepper-vertical" id="stepper1">
+    <div class="step editing">
+    <div class="step-circle"><span>1</span></div>
+    <div class="step-title">Ordered</div>
+    <div class="step-bar-left"></div>
+    <div class="step-bar-right"></div>
+    </div>
+    <div class="step">
+    <div class="step-circle"><span>2</span></div>
+    <div class="step-title">Placed</div>
+    <div class="step-bar-left"></div>
+    <div class="step-bar-right"></div>
+    </div>
+    <div class="step">
+    <div class="step-circle"><span>3</span></div>
+    <div class="step-title">Shipped</div>
+    <!-- <div class="step-optional">Optional</div> -->
+    <div class="step-bar-left"></div>
+    <div class="step-bar-right"></div>
+    </div>
+    <div class="step">
+    <div class="step-circle"><span>4</span></div>
+    <div class="step-title">Delivery</div>
+    <!-- <div class="step-optional">Optional</div> -->
+    <div class="step-bar-left"></div>
+    <div class="step-bar-right"></div>
+    </div>
+    </div>
+    </ion-card>
+    <ion-button size="default" style="margin-left: 200px;" (click)="nextStep()">Track</ion-button>
+</ion-content>

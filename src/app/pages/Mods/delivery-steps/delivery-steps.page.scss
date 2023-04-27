@@ -1,0 +1,119 @@
+.stepper-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+    
+    .stepper-vertical .step {
+    display: block;
+    position: relative;
+    padding: 1.4rem;
+    z-index: 2;
+    width: 100%;
+    }
+    
+    .stepper-vertical .step:last-child .step-bar-left,
+    .stepper-vertical .step:last-child .step-bar-right {
+    display: none;
+    }
+    
+    .stepper-vertical .step .step-circle {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 2;
+    border: 2px solid #D9E2EC;
+    margin-left: 0%;
+    }
+    
+    .stepper-vertical .step.done .step-circle {
+    background-color: #199473;
+    border: 2px solid #199473;
+    color: #FFFFFF;
+    }
+    
+    .stepper-vertical .step.done .step-circle:before {
+    font-family: 'FontAwesome';
+    font-weight: 100;
+    content: "\f00c";
+    }
+    
+    .stepper-vertical .step.done .step-circle * {
+    display: none;
+    }
+    
+    .stepper-vertical .step.done .step-title {
+    color: #0F5A22;
+    }
+    
+    .stepper-vertical .step.editing .step-circle {
+    background: #FFFFFF;
+    border-color: #199473;
+    color: #199473;
+    }
+    
+    .stepper-vertical .step.editing .step-title {
+    color: #199473;
+    text-decoration: underline;
+    }
+    
+    .stepper-vertical .step .step-title {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    }
+    
+    .stepper-vertical .step .step-title,
+    .stepper-vertical .step .step-optional {
+    // text-align: ;
+    margin-left: 30px;
+    color: #829AB1;
+    }
+    .step-title {
+    position: relative;
+    bottom: 40px;
+    left: 10px;
+    
+    }
+    .stepper-vertical .step .step-optional {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #9FB3C8;
+    }
+    
+    .stepper-vertical .step .step-bar-left,
+    .stepper-vertical .step .step-bar-right {
+    position: absolute;
+    left: calc(2rem + 5px);
+    width: 5px;
+    background-color: #D9E2EC;
+    border: solid #D9E2EC;
+    border-width: 0 2px;
+    }
+    
+    .stepper-vertical .step .step-bar-left {
+    height: calc(100% - 2rem);
+    top: 50%;
+    margin-top: 0%;
+    z-index: -1;
+    }
+    
+    .stepper-vertical .step .step-bar-right {
+    height: 0;
+    top: 50%;
+    margin-top: 0%;
+    z-index: -1;
+    transition: height 500ms ease-in-out;
+    }
+    
+    .stepper-vertical .step.done .step-bar-right {
+    background-color: #199473;
+    border-color: #199473;
+    z-index: 3;
+    height: calc(100% - 1rem);
+    }
