@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "name": "Pavan",
+      "status": "Deactivate"
+    },
+    {
+      "id": 2,
+      "name": "Kumar",
+      "status": "Active"
+    },
+    {
+      "id": 3,
+      "name": "Pa1",
+      "status": "Running"
+    },
+    {
+      "id": 4,
+      "name": "Pavan Kumar",
+      "status": "Running"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

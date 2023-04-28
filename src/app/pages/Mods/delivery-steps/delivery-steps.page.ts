@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,13 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeliveryStepsPage implements OnInit {
 
-  constructor() { }
+  name = "Pavan-Status";
 
-  ngOnInit() {
-  }
-  name = "Angular";
   currentStep = 1;
   numSteps = 4;
+  statuses = ['Active', 'Running', 'Deactivate'];
+  status = { status: '' };
+  info: any;
+  currentStatus: any;
+  data: any = [];
+  constructor(private http: HttpClient){}
+  ngOnInit() {
+    this.http.get('http://localhost:3000/posts').subscribe((res: any) => {
+      this.data = res;
+      this.info = this.data[2];
+      this.currentStatus = this.info.status; // replace with the "status" property from the JSON data
+      console.log(this.currentStatus); 
+
+    })
+  }
 
   nextStep() {
     this.currentStep++;
@@ -57,3 +70,7 @@ export class DeliveryStepsPage implements OnInit {
     }
   }
 }
+
+
+
+
