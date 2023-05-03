@@ -1,12 +1,19 @@
 ion-toolbar{
   background-color: rgb(255, 255, 255);
   box-shadow: 1px 3px 5px #ababab;  
+  // height: 50px;
 }
 .sub-title{
   position: relative;
   top: 3vh;
 }
-
+.title-header{
+  font-size: 15px;
+  font-weight: 700;
+}
+.title-name{
+  font-size: 10px;
+}
 .header-text{
   position: relative;
   text-align: justify;
@@ -14,9 +21,15 @@ ion-toolbar{
 .scan-qr{
   position: relative;
 text-align: center;
+line-height: 12px;
 ion-label{
-  font-size: small;
+  font-size: 12px;
 }
+}
+.icon{
+  position: relative;
+  height: 28px;
+  width: 28px;
 }
 ion-menu-button {
   color: var(--ion-color-dark);
@@ -51,7 +64,8 @@ ion-checkbox::part(container) {
 
 ion-avatar{
   position: relative;
-  left: 5vh;
-  height: 35px;
-  width: 35px;
+  height: 50px;
+  width: 50px;
+  // text-align: center;
+  left: 15px;
 }

@@ -1,29 +1,44 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button color="primary"></ion-menu-button>
-    </ion-buttons>
-    <div class="header-text">
-    <!-- <ion-avatar>
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar> -->
-    <ion-title>{{ folder }}</ion-title><br><br>
-   <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -->
-    <ion-text>TitleTitleTitleTitleTitle</ion-text>
-    </div>
+  <ion-toolbar >
     
-  <!-- <div slot="end" class="scan-qr">
-    <ion-icon  color="primary" size="large" name="scan-outline"></ion-icon><br>
-    <ion-label color="primary"  >Scan QR</ion-label>
-  </div> -->
+
+    <ion-grid style="text-align: center;">
+      <ion-row>
+        <ion-col id="1">
+          <ion-buttons >
+            <ion-menu-button color="dark"></ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col id="2" >
+          <ion-avatar>
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+        </ion-col>
+      <ion-col id="3" >
+        <ion-row >
+          <div style="line-height: 3px; text-align: left; position: relative; right: 20px;">
+
+            <p class="title-header">Name</p>
+            <p class="title-name">Role/Designation</p>
+          </div>
+        </ion-row>
+        </ion-col>
+        <ion-col id="4">
+          <div  class="scan-qr">
+            <!-- <ion-icon  color="primary" class="icon" name="alert-circle-outline"></ion-icon><br> -->
+            <ion-icon  color="primary" class="icon" name="scan-outline"></ion-icon><br>
+            <ion-label color="primary">Scan QR</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-<ion-button  (click)="openModal()">Open Modal</ion-button>
+<!-- <ion-button  (click)="openModal()">Open Modal</ion-button> -->
   <!-- <div id="container">
 
 <div class="Upper-part">
