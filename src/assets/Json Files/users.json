@@ -1,0 +1,36 @@
+
+{
+    "users":[
+     
+         {
+             "id": "01",
+             "name": "Test-User-0",
+             "sname": "Test-User",
+             "image": "/assets/profiles/UserProfile1.png"
+             
+           },
+           {
+             "id": "5763",
+             "name": "Pavan Kumar Naraharisetti",
+             "sname": "Pavan Kumar",
+             "image": "/assets/profiles/pavan.jpg"
+
+           },
+           {
+             "id": "5757",
+             "name": "Test-User-1",
+             "sname": "Test-User",
+             "image": "/assets/profiles/FUserProfile3.png"
+           },
+           {
+             "id": "04",
+             "name": "Test-User-2",
+             "sname": "Test-User",
+             "image": "/assets/profiles/UserProfile2.png"
+
+           }         
+
+
+ ]
+}
+

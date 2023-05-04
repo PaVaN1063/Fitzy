@@ -48,7 +48,10 @@
           <!-- <h3>25</h3>
          Mar 2023 [Saturday]
          <p >01:15:44 PM</p> -->
-<p>{{todayDate | date: "EEE dd MMM yyyy"}}</p>
+         <p>
+           <ion-input [value]="dateTime" displayFormat="MMM DD, YYYY HH:mm" ></ion-input>
+          </p>
+<!-- <p>{{todayDate | date: "EEE dd MMM yyyy"}}</p> -->
         </div>
       </ion-col>
     </ion-row>

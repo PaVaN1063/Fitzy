@@ -10,9 +10,14 @@ import { IonModal, ModalController } from '@ionic/angular';
 export class IonModalPage implements OnInit {
   @ViewChild(IonModal) modal: IonModal | any;
 todayDate: any;
+
+dateTime:any;
   constructor(private modalController: ModalController,) { }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.dateTime = new Date().toISOString();
+    });
   }
   cancel() {
     this.modalController.dismiss(null, 'cancel');
