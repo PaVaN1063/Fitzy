@@ -9,15 +9,19 @@ export class JsonService {
 
   constructor(private http: HttpClient) { }
   
-getData(): Observable<any>{
+getBoxData(): Observable<any>{
   return this.http.get('../../assets/Json Files/date.json');
 }
 
-getUsers(){
-  return this.http.get('../../assers/Json Files/users.json');
+getUsers() : Observable<any>{
+  return this.http.get('../../assets/Json Files/users.json');
 }
 
-getMonths(){
-  return this.http.get('../../assers/Json Files/months.json');
+getMonths() : Observable<any>{
+  return this.http.get('../../assets/Json Files/months.json');
+}
+
+getDates() : Observable<any>{
+  return this.http.get('../../assets/Json Files/date.json');
 }
 }

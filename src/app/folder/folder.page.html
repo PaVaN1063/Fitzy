@@ -27,7 +27,7 @@
           <div class="scan-qr">
             <!-- <ion-icon  color="primary" class="icon" name="alert-circle-outline"></ion-icon><br> -->
             <ion-icon color="primary" class="icon" name="scan-outline"></ion-icon><br>
-            <ion-label color="primary">Scan QR</ion-label>
+            <!-- <ion-label color="primary">Support</ion-label> -->
           </div>
         </ion-col>
       </ion-row>
@@ -38,24 +38,25 @@
 
 <ion-content [fullscreen]="true">
 
-  <!-- <ion-button  (click)="openModal()">Open Modal</ion-button> -->
+  <ion-button  (click)="openModal()">Open Modal</ion-button>
 
-  <!-- <div id="container">
+  <div id="container">
     <div class="Upper-part">
       <ion-item lines="full">
         <ion-grid [fixed]="true">
           <ion-row>
             <ion-col>
               <ion-select interface="popover" placeholder="2023">
-                <div *ngFor="let date of calender">
+                <div *ngFor="let date of years">
                   <ion-select-option value="{{date.year}}">{{date.year}}</ion-select-option>
                 </div>
               </ion-select>
             </ion-col>
             <ion-col>
               <ion-select interface="popover" placeholder="month">
-                <div *ngFor="let date of calender">
-                  <ion-select-option value="{{date.months}}">{{date.months}}</ion-select-option>
+                <div *ngFor="let date of months">
+                  {{date.month}}
+                  <!-- <ion-select-option value="{{date}}">{{date.month}}</ion-select-option> -->
                 </div>
               </ion-select>
             </ion-col>
@@ -99,7 +100,7 @@
         </ion-row>
       </ion-grid>
     </div>
-  </div> -->
+  </div>
 
   <!-- <strong class="capitalize">{{ folder }}</strong> -->
 </ion-content>
