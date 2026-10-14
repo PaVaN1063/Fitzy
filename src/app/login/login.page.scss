@@ -81,5 +81,7 @@
   &:focus-visible { outline: 2px solid var(--ion-color-primary); outline-offset: 2px; }
 }
 .body3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.body3 > div { min-width: 0; }
+.f-box ion-input { min-width: 0; flex: 1; }
 .details .primary { margin-top: 24px; }
 @media (prefers-reduced-motion: reduce) { .hero .logo { animation: none; } }
