@@ -18,13 +18,7 @@ const routes: Routes = [
   {
     path: 'ion-modal',
     loadChildren: () => import('./ionic-Components/ion-modal/ion-modal.module').then( m => m.IonModalPageModule)
-  },
-  {
-    path: 'delivery-steps',
-    loadChildren: () => import('./pages/Mods/delivery-steps/delivery-steps.module').then( m => m.DeliveryStepsPageModule)
   }
-
-
 ];
 
 @NgModule({
