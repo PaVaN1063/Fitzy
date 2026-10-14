@@ -1,62 +1,96 @@
 <ion-content [fullscreen]="true" class="login">
-  <div class="hero">
-    <img src="assets/icon/logo-icon.svg" alt="" class="logo" width="72" height="72" />
-    <h1>{{ mode === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
-    <p>{{ mode === 'login' ? 'Log in to keep tracking your meals and water.' : 'Track meals, protein and water in under a minute a day.' }}</p>
-  </div>
+  <!-- ========== Step 1: mobile number ========== -->
+  <ng-container *ngIf="step === 'phone'">
+    <div class="hero">
+      <div class="glow" aria-hidden="true"></div>
+      <img src="assets/icon/logo.png" alt="efacm logo" class="logo" width="96" height="96" />
+      <h1>efacm</h1>
+      <p>Eat. Train. Track.</p>
+    </div>
 
-  <div class="panel">
-    <ion-segment [ngModel]="mode" (ngModelChange)="setMode($event)" class="seg">
-      <ion-segment-button value="login"><ion-label>Log in</ion-label></ion-segment-button>
-      <ion-segment-button value="signup"><ion-label>Sign up</ion-label></ion-segment-button>
-    </ion-segment>
+    <div class="panel">
+      <h2>Log in or sign up</h2>
+      <p class="lead">Enter your mobile number. We'll send you a 4-digit code.</p>
 
-    <form (ngSubmit)="submit()" class="form">
-      <ion-item *ngIf="mode === 'signup'" lines="full">
-        <ion-icon name="person-outline" slot="start"></ion-icon>
-        <ion-input name="name" [(ngModel)]="name" placeholder="Full name" autocomplete="name" aria-label="Full name"></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-icon name="mail-outline" slot="start"></ion-icon>
-        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="email" placeholder="Email" autocomplete="email" aria-label="Email"></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-        <ion-input name="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Password (6+ characters)"
-                   [autocomplete]="mode === 'login' ? 'current-password' : 'new-password'" aria-label="Password"></ion-input>
-        <ion-button slot="end" fill="clear" color="medium" type="button" (click)="showPassword = !showPassword"
-                    [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-          <ion-icon slot="icon-only" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-        </ion-button>
-      </ion-item>
+      <label class="phone-field" [class.ready]="phoneReady">
+        <span class="cc"><span class="flag" aria-hidden="true">🇮🇳</span>+91</span>
+        <input type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Mobile number"
+               #phoneInput [value]="phone" (input)="onPhone(phoneInput)" (keyup.enter)="sendCode()"
+               maxlength="14" aria-label="Mobile number" />
+        <ion-icon *ngIf="phoneReady" name="checkmark-circle" class="ok"></ion-icon>
+      </label>
 
-      <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+      <ion-button expand="block" size="large" class="primary" (click)="sendCode()" [disabled]="!phoneReady || sending">
+        Get code
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
 
-      <div class="forgot" *ngIf="mode === 'login'">
-        <ion-button fill="clear" size="small" type="button" (click)="forgot()">Forgot password?</ion-button>
+      <button class="demo-card" type="button" (click)="useDemoNumber()">
+        <span class="demo-badge">Demo</span>
+        <span class="demo-text">
+          <b>Use the sample account</b>
+          <span>{{ demoPhone }} · Rahul's two weeks of meals</span>
+        </span>
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+
+      <p class="fine">Any other number creates a new account on this phone. Demo app: no SMS is sent and nothing goes to a server.</p>
+    </div>
+  </ng-container>
+
+  <!-- ========== Step 2: about you ========== -->
+  <ng-container *ngIf="step === 'details'">
+    <div class="top">
+      <ion-button fill="clear" color="dark" (click)="back()" aria-label="Back">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+      <div class="steps" aria-label="Step 2 of 2"><i class="on"></i><i class="on"></i></div>
+    </div>
+
+    <div class="details">
+      <h1 class="d-title">Tell us about you</h1>
+      <p class="lead">This sets your daily calories, protein and water goals.</p>
+
+      <label class="f-label" for="d-phone">Mobile number</label>
+      <div class="f-box disabled">
+        <ion-input id="d-phone" [value]="prettyPhone" [disabled]="true" aria-label="Mobile number"></ion-input>
+        <span class="verified"><ion-icon name="shield-checkmark"></ion-icon>Verified</span>
       </div>
 
-      <ion-button expand="block" size="large" type="submit" [disabled]="busy" class="primary">
-        <ion-spinner *ngIf="busy" name="crescent"></ion-spinner>
-        <span *ngIf="!busy">{{ mode === 'login' ? 'Log in' : 'Create account' }}</span>
-      </ion-button>
-    </form>
+      <label class="f-label" for="d-name">Name <span class="req">*</span></label>
+      <div class="f-box" [class.bad]="nameError">
+        <ion-input id="d-name" [(ngModel)]="details.name" (ngModelChange)="nameError = ''" placeholder="Your full name"
+                   autocomplete="name" autocapitalize="words" aria-label="Name"></ion-input>
+      </div>
+      <p class="err" *ngIf="nameError" role="alert">{{ nameError }}</p>
 
-    <div class="or"><span>or</span></div>
+      <span class="f-label">Gender</span>
+      <div class="genders" role="radiogroup" aria-label="Gender">
+        <button *ngFor="let g of genders" type="button" class="gender" role="radio"
+                [class.on]="details.sex === g.id" [attr.aria-checked]="details.sex === g.id" (click)="setSex(g.id)">
+          <ion-icon [name]="g.icon"></ion-icon>{{ g.label }}
+        </button>
+      </div>
 
-    <ion-button expand="block" fill="outline" color="medium" class="google" (click)="google()">
-      <ion-icon slot="start" name="logo-google"></ion-icon>Continue with Google
-    </ion-button>
+      <div class="body3">
+        <div>
+          <label class="f-label" for="d-age">Age</label>
+          <div class="f-box unit"><ion-input id="d-age" type="number" inputmode="numeric" placeholder="25" [(ngModel)]="details.age" aria-label="Age in years"></ion-input><span>yrs</span></div>
+        </div>
+        <div>
+          <label class="f-label" for="d-weight">Weight</label>
+          <div class="f-box unit"><ion-input id="d-weight" type="number" inputmode="decimal" placeholder="70" [(ngModel)]="details.weightKg" aria-label="Weight in kg"></ion-input><span>kg</span></div>
+        </div>
+        <div>
+          <label class="f-label" for="d-height">Height</label>
+          <div class="f-box unit"><ion-input id="d-height" type="number" inputmode="numeric" placeholder="170" [(ngModel)]="details.heightCm" aria-label="Height in cm"></ion-input><span>cm</span></div>
+        </div>
+      </div>
+      <p class="err" *ngIf="bodyError" role="alert">{{ bodyError }}</p>
 
-    <button class="demo-card" type="button" (click)="useDemo()">
-      <span class="demo-badge">Demo</span>
-      <span class="demo-text">
-        <b>Try the sample account</b>
-        <span>{{ demo.email }} · {{ demo.password }}</span>
-      </span>
-      <ion-icon name="arrow-forward"></ion-icon>
-    </button>
-
-    <p class="fine">This is a demo app. Accounts are stored only on this phone and nothing is sent to a server.</p>
-  </div>
+      <ion-button expand="block" size="large" class="primary" (click)="finish(false)">Continue</ion-button>
+      <ion-button expand="block" fill="clear" color="medium" (click)="finish(true)">Skip for now</ion-button>
+      <p class="fine">Only your name is required. You can change everything later in Profile.</p>
+    </div>
+  </ng-container>
 </ion-content>

@@ -16,16 +16,16 @@ interface AppState {
   recentFoodIds: string[];
 }
 
-const STORAGE_KEY = 'efacm.state.v2';
+const STORAGE_KEY = 'efacm.state.v3';
 
 /**
- * Sample account shown on first launch. Rahul is a made-up person; the email uses the
- * reserved example.com domain and the phone number is a placeholder.
+ * Sample account. Rahul is a made-up person; the email uses the reserved example.com
+ * domain and the phone number is a common placeholder.
  */
 export const DEMO_PROFILE: Profile = {
   name: 'Rahul Varma',
+  phone: '9876543210',
   email: 'rahul.varma@example.com',
-  phone: '+91 98765 43210',
   city: 'Bengaluru',
   diet: 'nonveg',
   memberSince: '2026-08-03',
@@ -248,11 +248,14 @@ export class TrackerService {
     this.commit();
   }
 
-  /** Starts a brand-new, empty account (used by sign-up). */
-  startFreshAccount(name: string, email: string): void {
+  /** Starts a brand-new, empty account for a newly verified number. */
+  startFreshAccount(details: Pick<Profile, 'phone' | 'name' | 'sex' | 'age' | 'heightCm' | 'weightKg'>): void {
     this.state = {
       version: 2,
-      profile: { ...DEMO_PROFILE, name, email, phone: '', city: '', memberSince: todayKey(), weightKg: 70, age: 25, heightCm: 170, goal: 'maintain', proteinPerKg: DEFAULT_PROTEIN_PER_KG.maintain },
+      profile: {
+        ...DEMO_PROFILE, ...details, email: '', city: '', diet: 'nonveg', memberSince: todayKey(),
+        activity: 'moderate', goal: 'maintain', proteinPerKg: DEFAULT_PROTEIN_PER_KG.maintain,
+      },
       settings: { ...this.state.settings },
       days: {},
       weights: [],

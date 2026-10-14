@@ -8,7 +8,7 @@ const TOPICS: { [key: string]: Topic } = {
   help: {
     title: 'Help & FAQ',
     sections: [
-      { h: 'How are my calories worked out?', p: ['Your resting burn (BMR) uses the Mifflin–St Jeor formula from your sex, age, height and weight. It is multiplied by your activity level to get maintenance calories, then adjusted for your goal: −20% to lose fat, +10% to build muscle.'] },
+      { h: 'How are my calories worked out?', p: ['Your resting burn (BMR) uses the Mifflin–St Jeor formula from your gender, age, height and weight. It is multiplied by your activity level to get maintenance calories, then adjusted for your goal: −20% to lose fat, +10% to build muscle.'] },
       { h: 'How much protein should I eat?', p: ['Most people who lift do well on 1.6–2.2 g per kg of body weight. Set your number with the slider in Body & goals; the default depends on your goal.'] },
       { h: 'Why does my water goal change?', p: ['It is 35 ml per kg of body weight, plus 500 ml on days you mark as a gym day on the Meals tab.'] },
       { h: 'A food is missing', p: ['Tap Add food, then Custom food. Enter the macros from the pack and it will be saved for next time.'] },
@@ -20,7 +20,7 @@ const TOPICS: { [key: string]: Topic } = {
     title: 'Privacy',
     sections: [
       { h: 'Your data stays on your phone', p: ['Meals, water, weigh-ins and your profile are stored only in this app on this phone. Nothing is uploaded, and there is no server.'] },
-      { h: 'Sign-in', p: ['Login is a demo. Your email and password are checked for format only and are not sent anywhere. "Continue with Google" does not contact Google.'] },
+      { h: 'Sign-in', p: ['Login is a demo. No text message is sent and your number does not leave this phone. The verification code is always 1234.'] },
       { h: 'Deleting your data', p: ['Profile › Delete all logs removes your meals, water and weigh-ins. Uninstalling the app removes everything.'] },
     ],
   },

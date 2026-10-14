@@ -26,10 +26,20 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 
+/* Outfit (SIL Open Font License, see assets/fonts/Outfit-OFL.txt), bundled so it works offline */
+@font-face {
+  font-family: 'Outfit';
+  src: url('/assets/fonts/Outfit.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---------------------------------------------------------------------------
  * efacm app styles shared by every page
  * ------------------------------------------------------------------------- */
 :root {
+  --font-display: 'Outfit', 'Roboto', 'Helvetica Neue', sans-serif;
   --app-bg: #f2f5f3;
   --card-bg: #ffffff;
   --macro-protein: #e0564f;
@@ -60,7 +70,16 @@ ion-header ion-toolbar {
 }
 
 ion-title {
+  font-family: var(--font-display);
   font-weight: 700;
+  font-size: 21px;
+}
+
+/* Headings use the brand display face */
+.card-title,
+h1,
+h2 {
+  font-family: var(--font-display);
 }
 
 .card {
@@ -137,4 +156,10 @@ ion-title {
 
 ion-modal {
   --border-radius: 20px;
+}
+
+/* OTP drawer on the login screen */
+ion-modal.otp-drawer {
+  --border-radius: 28px;
+  --backdrop-opacity: 0.45;
 }

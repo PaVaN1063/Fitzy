@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- efacm mark: the app's progress ring, nearly closed, around a leaf -->
-  <circle cx="256" cy="256" r="150" fill="none" stroke="#ffffff" stroke-width="46" stroke-linecap="round"
-          stroke-dasharray="785 1000" transform="rotate(-30 256 256)"/>
-  <circle cx="385.9" cy="181" r="23" fill="#b9f5d8"/>
-  <path d="M256 348 C 182 312 176 214 256 154 C 336 214 330 312 256 348 Z" fill="#ffffff"/>
-  <path d="M256 330 L256 196" stroke="#11a36a" stroke-width="12" stroke-linecap="round"/>
-  <path d="M256 286 L224 258 M256 248 L286 220" stroke="#11a36a" stroke-width="10" stroke-linecap="round"/>
-</svg>

@@ -46,11 +46,12 @@
     <h2 class="card-title">About you</h2>
     <ion-list lines="full" class="form">
       <ion-item lines="none">
-        <ion-label position="stacked">Sex (for the BMR formula)</ion-label>
+        <ion-label position="stacked">Gender (for the BMR formula)</ion-label>
       </ion-item>
       <ion-segment [(ngModel)]="form.sex" class="seg">
         <ion-segment-button value="male"><ion-label>Male</ion-label></ion-segment-button>
         <ion-segment-button value="female"><ion-label>Female</ion-label></ion-segment-button>
+        <ion-segment-button value="other"><ion-label>Other</ion-label></ion-segment-button>
       </ion-segment>
       <div class="row3">
         <ion-item>
@@ -102,7 +103,7 @@
   <section class="card">
     <h2 class="card-title">How this is calculated</h2>
     <ul class="how">
-      <li><b>BMR</b> (Mifflin–St Jeor): 10 × weight + 6.25 × height − 5 × age, +5 for men or −161 for women.</li>
+      <li><b>BMR</b> (Mifflin–St Jeor): 10 × weight + 6.25 × height − 5 × age, +5 for men or −161 for women (−78, the midpoint, for other).</li>
       <li><b>Maintenance</b> = BMR × activity factor.</li>
       <li><b>Target</b> = maintenance −20% to lose fat, +10% to build muscle (never below 1,500 kcal for men or 1,200 for women).</li>
       <li><b>Fat</b> = 25% of calories (at least 0.6 g per kg). <b>Carbs</b> fill the rest.</li>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 
-import { isEmail } from '../core/auth.service';
+import { formatPhone, isEmail } from '../core/auth.service';
 import { TrackerService } from '../core/tracker.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class EditProfilePage {
 
   ionViewWillEnter(): void {
     const p = this.tracker.profile;
-    this.form = { name: p.name, email: p.email, phone: p.phone, city: p.city };
+    this.form = { name: p.name, email: p.email, phone: formatPhone(p.phone), city: p.city };
     this.error = '';
   }
 
@@ -29,11 +29,9 @@ export class EditProfilePage {
   async save(): Promise<void> {
     const name = this.form.name.trim();
     const email = this.form.email.trim().toLowerCase();
-    const phone = this.form.phone.trim();
     if (name.length < 2) { this.error = 'Enter your name'; return; }
-    if (!isEmail(email)) { this.error = 'Enter a valid email address'; return; }
-    if (phone && !/^\+?[\d\s-]{7,16}$/.test(phone)) { this.error = 'Enter a valid phone number, or leave it empty'; return; }
-    this.tracker.updateProfile({ name, email, phone, city: this.form.city.trim() });
+    if (email && !isEmail(email)) { this.error = 'Enter a valid email address, or leave it empty'; return; }
+    this.tracker.updateProfile({ name, email, city: this.form.city.trim() });
     const t = await this.toast.create({ message: 'Profile saved', duration: 1500, position: 'top' });
     await t.present();
     this.nav.back();

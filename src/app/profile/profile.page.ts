@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController, AlertController, NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from '../core/auth.service';
+import { AuthService, formatPhone } from '../core/auth.service';
 import { fromKey } from '../core/dates';
 import { Diet, DIET_LABELS, Profile, Settings, Theme } from '../core/models';
 import { GOAL_LABELS, targets } from '../core/nutrition';
@@ -25,7 +25,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   stats!: ProfileStats;
   kcal = 0;
   protein = 0;
-  provider: 'email' | 'google' = 'email';
 
   private sub?: Subscription;
 
@@ -50,6 +49,10 @@ export class ProfilePage implements OnInit, OnDestroy {
   get initials(): string {
     const parts = (this.profile.name.trim() || '?').split(/\s+/);
     return (parts[0].charAt(0) + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : '')).toUpperCase();
+  }
+
+  get phone(): string {
+    return formatPhone(this.profile.phone);
   }
 
   get memberSince(): string {
@@ -158,7 +161,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     const t = targets(this.profile);
     this.kcal = t.kcal;
     this.protein = t.protein;
-    this.provider = this.auth.session?.provider ?? 'email';
   }
 
   private async say(message: string): Promise<void> {

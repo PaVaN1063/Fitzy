@@ -11,8 +11,9 @@
       <div class="avatar" aria-hidden="true">{{ initials }}</div>
       <div class="who-text">
         <h2>{{ profile.name }}</h2>
-        <p>{{ profile.email }}</p>
-        <p class="since">Member since {{ memberSince }}<span *ngIf="provider === 'google'"> · Google</span></p>
+        <p>{{ phone }}</p>
+        <p class="since" *ngIf="profile.email">{{ profile.email }}</p>
+        <p class="since">Member since {{ memberSince }}</p>
       </div>
       <ion-button fill="clear" routerLink="/tabs/profile/edit" aria-label="Edit profile">
         <ion-icon slot="icon-only" name="create-outline"></ion-icon>

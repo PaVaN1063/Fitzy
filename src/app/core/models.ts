@@ -1,4 +1,4 @@
-export type Sex = 'male' | 'female';
+export type Sex = 'male' | 'female' | 'other';
 export type Goal = 'cut' | 'maintain' | 'bulk';
 export type Activity = 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
 export type MealType = 'breakfast' | 'lunch' | 'snacks' | 'dinner';
@@ -16,8 +16,10 @@ export const MEALS: { id: MealType; label: string; icon: string }[] = [
 
 export interface Profile {
   name: string;
-  email: string;
+  /** 10-digit mobile number without the country code; the login identity */
   phone: string;
+  /** optional */
+  email: string;
   city: string;
   diet: Diet;
   /** YYYY-MM-DD the account was created */

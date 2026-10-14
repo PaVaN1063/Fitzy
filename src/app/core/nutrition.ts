@@ -39,10 +39,12 @@ export const DEFAULT_PROTEIN_PER_KG: Record<Goal, number> = {
 
 const KCAL_PER_G = { protein: 4, carbs: 4, fat: 9 };
 
+/** Sex constant in Mifflin–St Jeor; "other" uses the midpoint of the male and female values. */
+const SEX_OFFSET = { male: 5, female: -161, other: -78 };
+
 /** Mifflin–St Jeor resting energy expenditure, kcal/day. */
 export function bmr(p: Pick<Profile, 'sex' | 'age' | 'heightCm' | 'weightKg'>): number {
-  const base = 10 * p.weightKg + 6.25 * p.heightCm - 5 * p.age;
-  return base + (p.sex === 'male' ? 5 : -161);
+  return 10 * p.weightKg + 6.25 * p.heightCm - 5 * p.age + SEX_OFFSET[p.sex];
 }
 
 export function tdee(p: Profile): number {

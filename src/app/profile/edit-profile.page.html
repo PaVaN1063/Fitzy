@@ -25,12 +25,13 @@
         <ion-input name="name" [(ngModel)]="form.name" autocomplete="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Email</ion-label>
-        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="form.email" autocomplete="email"></ion-input>
+        <ion-label position="stacked">Mobile number</ion-label>
+        <ion-input name="phone" [value]="form.phone" [disabled]="true"></ion-input>
+        <ion-note slot="end" class="verified"><ion-icon name="shield-checkmark"></ion-icon> Login number</ion-note>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Phone (optional)</ion-label>
-        <ion-input name="phone" type="tel" inputmode="tel" [(ngModel)]="form.phone" placeholder="+91 …" autocomplete="tel"></ion-input>
+        <ion-label position="stacked">Email (optional)</ion-label>
+        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="form.email" autocomplete="email" placeholder="you@example.com"></ion-input>
       </ion-item>
       <ion-item lines="none">
         <ion-label position="stacked">City (optional)</ion-label>

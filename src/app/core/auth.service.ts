@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
 
+import { Profile } from './models';
 import { TrackerService } from './tracker.service';
 
 export interface Session {
-  email: string;
-  provider: 'email' | 'google';
+  /** 10-digit mobile number */
+  phone: string;
   /** epoch ms */
   since: number;
 }
 
-const SESSION_KEY = 'efacm.session';
+export type VerifyResult = 'existing' | 'new' | 'wrong-code';
 
-/** The demo account's sign-in details, shown on the login screen. */
-export const DEMO_LOGIN = { email: 'rahul.varma@example.com', password: 'efacm123' };
+const SESSION_KEY = 'efacm.session.v2';
+
+/** The sample account's number and the demo verification code. */
+export const DEMO_PHONE = '9876543210';
+export const DEMO_OTP = '1234';
+export const OTP_LENGTH = 4;
 
 /**
- * DEMO sign-in. Nothing is sent anywhere: any well-formed email with a password of
- * 6+ characters is accepted, and the session is just a flag on this phone.
+ * DEMO phone login. No SMS is sent: the code is always DEMO_OTP.
+ * The sample number opens Rahul's account; any other number creates a new account.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  /** Number waiting for, or past, OTP verification. */
+  private pendingPhone = '';
+  private verifiedPhone = '';
+
   constructor(private tracker: TrackerService) {}
 
   get session(): Session | null {
@@ -35,35 +44,44 @@ export class AuthService {
     return this.session !== null;
   }
 
-  /** Returns an error message, or null when signed in. */
-  logIn(email: string, password: string): string | null {
-    const problem = checkCredentials(email, password);
-    if (problem) { return problem; }
-    const clean = email.trim().toLowerCase();
-    if (clean !== this.tracker.profile.email.toLowerCase()) {
-      this.tracker.updateProfile({ email: clean });
+  /** The number that passed OTP and still needs profile details (sign-up). */
+  get phoneAwaitingDetails(): string {
+    return this.verifiedPhone;
+  }
+
+  /** Demo: pretends to text a code to the number. */
+  requestOtp(phone: string): void {
+    this.pendingPhone = digitsOnly(phone);
+    this.verifiedPhone = '';
+  }
+
+  verifyOtp(code: string): VerifyResult {
+    if (code !== DEMO_OTP || !this.pendingPhone) { return 'wrong-code'; }
+    const phone = this.pendingPhone;
+    if (phone === this.tracker.profile.phone) {
+      this.start(phone);
+      return 'existing';
     }
-    this.save({ email: clean, provider: 'email', since: Date.now() });
-    return null;
+    if (phone === DEMO_PHONE) {
+      this.tracker.resetToDemo();
+      this.start(phone);
+      return 'existing';
+    }
+    this.verifiedPhone = phone;
+    return 'new';
   }
 
-  /** Creates a new, empty account on this phone. Returns an error message, or null. */
-  signUp(name: string, email: string, password: string): string | null {
-    if (name.trim().length < 2) { return 'Enter your name'; }
-    const problem = checkCredentials(email, password);
-    if (problem) { return problem; }
-    const clean = email.trim().toLowerCase();
-    this.tracker.startFreshAccount(name.trim(), clean);
-    this.save({ email: clean, provider: 'email', since: Date.now() });
-    return null;
-  }
-
-  /** Demo: signs in to the sample account without opening Google. */
-  logInWithGoogle(): void {
-    this.save({ email: this.tracker.profile.email, provider: 'google', since: Date.now() });
+  /** Finishes sign-up for a verified new number. */
+  completeSignUp(details: Pick<Profile, 'name' | 'sex' | 'age' | 'heightCm' | 'weightKg'>): void {
+    const phone = this.verifiedPhone;
+    if (!phone) { return; }
+    this.tracker.startFreshAccount({ ...details, phone });
+    this.start(phone);
   }
 
   logOut(): void {
+    this.pendingPhone = '';
+    this.verifiedPhone = '';
     try {
       localStorage.removeItem(SESSION_KEY);
     } catch {
@@ -71,21 +89,27 @@ export class AuthService {
     }
   }
 
-  private save(s: Session): void {
+  private start(phone: string): void {
+    this.pendingPhone = '';
+    this.verifiedPhone = '';
     try {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+      localStorage.setItem(SESSION_KEY, JSON.stringify({ phone, since: Date.now() } as Session));
     } catch {
       // Storage unavailable: the user will need to sign in again next launch.
     }
   }
 }
 
-export function isEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+export function digitsOnly(value: string): string {
+  return (value || '').replace(/\D/g, '');
 }
 
-function checkCredentials(email: string, password: string): string | null {
-  if (!isEmail(email)) { return 'Enter a valid email address'; }
-  if (password.length < 6) { return 'Password must be at least 6 characters'; }
-  return null;
+/** "9876543210" → "+91 98765 43210" */
+export function formatPhone(phone: string): string {
+  const d = digitsOnly(phone);
+  return d.length === 10 ? `+91 ${d.slice(0, 5)} ${d.slice(5)}` : d ? `+91 ${d}` : '';
+}
+
+export function isEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
 }
