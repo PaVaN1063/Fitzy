@@ -37,15 +37,19 @@
   --macro-fat: #7a62f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    --app-bg: var(--ion-background-color, #121212);
-    --card-bg: var(--ion-color-step-50, #1e1e1e);
-    --macro-protein: #f0736c;
-    --macro-carbs: #f2b630;
-    --macro-fat: #9a87ff;
-  }
+@mixin app-dark {
+  --app-bg: var(--ion-background-color, #121212);
+  --card-bg: var(--ion-color-step-50, #1e1e1e);
+  --macro-protein: #f0736c;
+  --macro-carbs: #f2b630;
+  --macro-fat: #9a87ff;
 }
+
+@media (prefers-color-scheme: dark) {
+  body:not(.light) { @include app-dark; }
+}
+
+body.dark { @include app-dark; }
 
 ion-content {
   --background: var(--app-bg);

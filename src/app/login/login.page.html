@@ -1,0 +1,62 @@
+<ion-content [fullscreen]="true" class="login">
+  <div class="hero">
+    <img src="assets/icon/logo-icon.svg" alt="" class="logo" width="72" height="72" />
+    <h1>{{ mode === 'login' ? 'Welcome back' : 'Create your account' }}</h1>
+    <p>{{ mode === 'login' ? 'Log in to keep tracking your meals and water.' : 'Track meals, protein and water in under a minute a day.' }}</p>
+  </div>
+
+  <div class="panel">
+    <ion-segment [ngModel]="mode" (ngModelChange)="setMode($event)" class="seg">
+      <ion-segment-button value="login"><ion-label>Log in</ion-label></ion-segment-button>
+      <ion-segment-button value="signup"><ion-label>Sign up</ion-label></ion-segment-button>
+    </ion-segment>
+
+    <form (ngSubmit)="submit()" class="form">
+      <ion-item *ngIf="mode === 'signup'" lines="full">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-input name="name" [(ngModel)]="name" placeholder="Full name" autocomplete="name" aria-label="Full name"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="email" placeholder="Email" autocomplete="email" aria-label="Email"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input name="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Password (6+ characters)"
+                   [autocomplete]="mode === 'login' ? 'current-password' : 'new-password'" aria-label="Password"></ion-input>
+        <ion-button slot="end" fill="clear" color="medium" type="button" (click)="showPassword = !showPassword"
+                    [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+          <ion-icon slot="icon-only" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+
+      <div class="forgot" *ngIf="mode === 'login'">
+        <ion-button fill="clear" size="small" type="button" (click)="forgot()">Forgot password?</ion-button>
+      </div>
+
+      <ion-button expand="block" size="large" type="submit" [disabled]="busy" class="primary">
+        <ion-spinner *ngIf="busy" name="crescent"></ion-spinner>
+        <span *ngIf="!busy">{{ mode === 'login' ? 'Log in' : 'Create account' }}</span>
+      </ion-button>
+    </form>
+
+    <div class="or"><span>or</span></div>
+
+    <ion-button expand="block" fill="outline" color="medium" class="google" (click)="google()">
+      <ion-icon slot="start" name="logo-google"></ion-icon>Continue with Google
+    </ion-button>
+
+    <button class="demo-card" type="button" (click)="useDemo()">
+      <span class="demo-badge">Demo</span>
+      <span class="demo-text">
+        <b>Try the sample account</b>
+        <span>{{ demo.email }} · {{ demo.password }}</span>
+      </span>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+
+    <p class="fine">This is a demo app. Accounts are stored only on this phone and nothing is sent to a server.</p>
+  </div>
+</ion-content>

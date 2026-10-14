@@ -1,4 +1,4 @@
-import { Food } from './models';
+import { Diet, Food } from './models';
 
 /**
  * Built-in foods with approximate values per serving (home-style portions, from common
@@ -14,7 +14,7 @@ export const FOODS: Food[] = [
   { id: 'oats-milk', name: 'Oats with milk', serving: '40 g oats + 200 ml milk', category: 'breakfast', veg: true, kcal: 260, protein: 13, carbs: 35, fat: 7 },
   { id: 'aloo-paratha', name: 'Aloo paratha', serving: '1 piece', category: 'breakfast', veg: true, kcal: 290, protein: 6, carbs: 38, fat: 13 },
   { id: 'brown-bread', name: 'Brown bread', serving: '1 slice', category: 'breakfast', veg: true, kcal: 70, protein: 3, carbs: 12, fat: 1 },
-  { id: 'omelette', name: 'Omelette (2 eggs)', serving: '1 omelette', category: 'breakfast', veg: false, kcal: 190, protein: 13, carbs: 1.5, fat: 15 },
+  { id: 'omelette', egg: true, name: 'Omelette (2 eggs)', serving: '1 omelette', category: 'breakfast', veg: false, kcal: 190, protein: 13, carbs: 1.5, fat: 15 },
 
   // Grains
   { id: 'roti', name: 'Roti / chapati', serving: '1 medium (40 g)', category: 'grains', veg: true, kcal: 110, protein: 3.1, carbs: 18, fat: 3 },
@@ -36,8 +36,8 @@ export const FOODS: Food[] = [
 
   // Protein
   { id: 'chicken-breast', name: 'Chicken breast (grilled)', serving: '100 g', category: 'protein', veg: false, kcal: 165, protein: 31, carbs: 0, fat: 3.6 },
-  { id: 'boiled-egg', name: 'Boiled egg', serving: '1 large', category: 'protein', veg: false, kcal: 78, protein: 6.3, carbs: 0.6, fat: 5.3 },
-  { id: 'egg-white', name: 'Egg white', serving: '1 egg', category: 'protein', veg: false, kcal: 17, protein: 3.6, carbs: 0.2, fat: 0.1 },
+  { id: 'boiled-egg', egg: true, name: 'Boiled egg', serving: '1 large', category: 'protein', veg: false, kcal: 78, protein: 6.3, carbs: 0.6, fat: 5.3 },
+  { id: 'egg-white', egg: true, name: 'Egg white', serving: '1 egg', category: 'protein', veg: false, kcal: 17, protein: 3.6, carbs: 0.2, fat: 0.1 },
   { id: 'paneer', name: 'Paneer', serving: '100 g', category: 'protein', veg: true, kcal: 265, protein: 18, carbs: 3, fat: 20 },
   { id: 'soya-chunks', name: 'Soya chunks (dry)', serving: '50 g', category: 'protein', veg: true, kcal: 172, protein: 26, carbs: 16.5, fat: 0.3 },
   { id: 'tofu', name: 'Tofu (firm)', serving: '100 g', category: 'protein', veg: true, kcal: 120, protein: 13, carbs: 3, fat: 7 },
@@ -75,5 +75,10 @@ export const DEMO_SCAN_PRODUCTS: Food[] = [
   { id: 'demo-pb', name: 'Crunchy Peanut Butter, Unsweetened', serving: '2 tbsp (32 g)', category: 'snacks', veg: true, kcal: 190, protein: 8.5, carbs: 6, fat: 15 },
   { id: 'demo-protein-bar', name: 'Protein Bar, Peanut Butter', serving: '1 bar (60 g)', category: 'snacks', veg: true, kcal: 240, protein: 20, carbs: 22, fat: 9 },
 ];
+
+/** Whether a food fits a diet preference. */
+export function fitsDiet(f: Food, diet: Diet): boolean {
+  return diet === 'nonveg' || f.veg || (diet === 'egg' && !!f.egg);
+}
 
 export const FOOD_CATEGORIES = ['all', 'breakfast', 'grains', 'dal & curry', 'protein', 'dairy', 'fruit', 'snacks', 'supplements', 'custom'] as const;

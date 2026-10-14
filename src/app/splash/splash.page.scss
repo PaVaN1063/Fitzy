@@ -1,0 +1,27 @@
+.splash {
+  --background: linear-gradient(160deg, #19b878 0%, #0e8d5c 55%, #0a6e48 100%);
+  color: #fff;
+}
+.center {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+}
+.mark { width: 128px; height: 128px; }
+.ring { stroke-dashoffset: 785; animation: draw 1s cubic-bezier(.6, 0, .2, 1) .1s forwards; }
+.spark { opacity: 0; animation: pop .35s ease-out .95s forwards; transform-origin: 385.9px 181px; }
+.leaf { opacity: 0; transform-origin: 256px 256px; animation: grow .5s ease-out .5s forwards; }
+.word {
+  margin: 14px 0 0; font-size: 40px; font-weight: 700; letter-spacing: .02em;
+  opacity: 0; animation: rise .5s ease-out .8s forwards;
+}
+.tag { margin: 0; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; opacity: 0; animation: rise .5s ease-out 1s forwards; }
+.foot {
+  position: absolute; left: 0; right: 0; bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  margin: 0; text-align: center; font-size: 13px; opacity: .75;
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes grow { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: .95; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ring, .spark, .leaf, .word, .tag { animation: none; opacity: 1; stroke-dashoffset: 0; }
+}

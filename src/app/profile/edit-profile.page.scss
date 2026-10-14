@@ -1,0 +1,7 @@
+.photo { display: flex; flex-direction: column; align-items: center; padding: 20px 0 4px; }
+.avatar {
+  width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(150deg, #19b878, #0b7d52); color: #fff; font-size: 30px; font-weight: 700;
+}
+.error { color: var(--ion-color-danger); font-size: 14px; margin: 0 20px; }
+.hint { color: var(--ion-color-medium); font-size: 13px; margin: 8px 20px 24px; }

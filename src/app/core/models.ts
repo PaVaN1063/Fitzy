@@ -2,6 +2,10 @@ export type Sex = 'male' | 'female';
 export type Goal = 'cut' | 'maintain' | 'bulk';
 export type Activity = 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
 export type MealType = 'breakfast' | 'lunch' | 'snacks' | 'dinner';
+/** veg = vegetarian, egg = vegetarian plus eggs, nonveg = everything */
+export type Diet = 'veg' | 'egg' | 'nonveg';
+export type Theme = 'system' | 'light' | 'dark';
+export type Units = 'metric' | 'imperial';
 
 export const MEALS: { id: MealType; label: string; icon: string }[] = [
   { id: 'breakfast', label: 'Breakfast', icon: 'cafe-outline' },
@@ -12,6 +16,12 @@ export const MEALS: { id: MealType; label: string; icon: string }[] = [
 
 export interface Profile {
   name: string;
+  email: string;
+  phone: string;
+  city: string;
+  diet: Diet;
+  /** YYYY-MM-DD the account was created */
+  memberSince: string;
   sex: Sex;
   age: number;
   heightCm: number;
@@ -38,6 +48,8 @@ export interface Food extends Macros {
   serving: string;
   category: FoodCategory;
   veg: boolean;
+  /** contains egg (allowed for eggetarians) */
+  egg?: boolean;
 }
 
 export interface LogEntry extends Macros {
@@ -75,3 +87,17 @@ export interface Targets extends Macros {
   tdee: number;
   waterMl: number;
 }
+
+export interface Settings {
+  theme: Theme;
+  /** Demo only: the app always calculates in kg and cm. */
+  units: Units;
+  /** Demo only: no notifications are scheduled. */
+  notify: { meals: boolean; water: boolean; weekly: boolean };
+}
+
+export const DIET_LABELS: Record<Diet, string> = {
+  veg: 'Vegetarian',
+  egg: 'Eggetarian',
+  nonveg: 'Non-vegetarian',
+};

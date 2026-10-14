@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/profile" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" [strong]="true">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="photo">
+    <div class="avatar" aria-hidden="true">{{ initials }}</div>
+    <ion-button fill="clear" size="small" (click)="changePhoto()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>Change photo
+    </ion-button>
+  </div>
+
+  <form class="card" (ngSubmit)="save()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label position="stacked">Full name</ion-label>
+        <ion-input name="name" [(ngModel)]="form.name" autocomplete="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="form.email" autocomplete="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Phone (optional)</ion-label>
+        <ion-input name="phone" type="tel" inputmode="tel" [(ngModel)]="form.phone" placeholder="+91 …" autocomplete="tel"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="stacked">City (optional)</ion-label>
+        <ion-input name="city" [(ngModel)]="form.city" placeholder="e.g. Bengaluru"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+  <p class="hint">Height, weight, age and goal are under Profile › Body &amp; goals.</p>
+</ion-content>

@@ -63,6 +63,12 @@ export class FoodSearchComponent implements OnInit {
     return !this.query.trim() && this.category === 'all' && this.recent.length > 0;
   }
 
+  /** Shown when the diet preference is hiding some foods. */
+  get dietNote(): string {
+    const d = this.tracker.profile.diet;
+    return d === 'veg' ? 'Showing vegetarian foods' : d === 'egg' ? 'Showing vegetarian foods and eggs' : '';
+  }
+
   get customKcalHint(): number {
     return kcalFromMacros(this.custom);
   }

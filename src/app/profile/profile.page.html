@@ -1,119 +1,128 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Targets</ion-title>
-    <ion-buttons slot="end" *ngIf="dirty">
-      <ion-button (click)="undo()">Undo</ion-button>
-    </ion-buttons>
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Live result -->
-  <section class="card result">
-    <div class="who">
-      <div class="avatar">{{ initials }}</div>
-      <div>
-        <h2>{{ form.name || 'Your name' }}</h2>
-        <p>{{ form.goal === 'cut' ? 'Losing fat' : form.goal === 'bulk' ? 'Building muscle' : 'Maintaining' }} · {{ clean.weightKg }} kg</p>
+  <!-- Who -->
+  <section class="card who">
+    <div class="who-row">
+      <div class="avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="who-text">
+        <h2>{{ profile.name }}</h2>
+        <p>{{ profile.email }}</p>
+        <p class="since">Member since {{ memberSince }}<span *ngIf="provider === 'google'"> · Google</span></p>
       </div>
+      <ion-button fill="clear" routerLink="/tabs/profile/edit" aria-label="Edit profile">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
     </div>
-
-    <div class="kcal"><b>{{ t.kcal | number }}</b> kcal a day</div>
-    <div class="split" aria-hidden="true">
-      <span class="p" [style.flex]="split.protein"></span>
-      <span class="c" [style.flex]="split.carbs"></span>
-      <span class="f" [style.flex]="split.fat"></span>
-    </div>
-    <div class="macros">
-      <div><i class="p"></i><b>{{ t.protein }} g</b><span>Protein · {{ split.protein }}%</span></div>
-      <div><i class="c"></i><b>{{ t.carbs }} g</b><span>Carbs · {{ split.carbs }}%</span></div>
-      <div><i class="f"></i><b>{{ t.fat }} g</b><span>Fat · {{ split.fat }}%</span></div>
-    </div>
-
-    <div class="facts">
-      <div><span>BMR</span><b>{{ t.bmr | number }}</b><small>kcal at rest</small></div>
-      <div><span>Maintenance</span><b>{{ t.tdee | number }}</b><small>kcal (TDEE)</small></div>
-      <div><span>BMI</span><b>{{ bmiValue }}</b><small>{{ bmiText }}</small></div>
-      <div><span>Water</span><b>{{ waterRest / 1000 | number: '1.1-2' }}–{{ waterGym / 1000 | number: '1.1-2' }} L</b><small>rest–gym day</small></div>
+    <div class="tags">
+      <span class="tag">{{ goalLabel }}</span>
+      <span class="tag">{{ dietLabel }}</span>
+      <span class="tag">{{ profile.weightKg }} kg · {{ profile.heightCm }} cm</span>
+      <span class="tag" *ngIf="profile.city">{{ profile.city }}</span>
     </div>
   </section>
 
-  <!-- Form -->
-  <section class="card">
-    <h2 class="card-title">About you</h2>
-    <ion-list lines="full" class="form">
-      <ion-item>
-        <ion-label position="stacked">Name</ion-label>
-        <ion-input [(ngModel)]="form.name" placeholder="Your name"></ion-input>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label position="stacked">Sex (for the BMR formula)</ion-label>
-      </ion-item>
-      <ion-segment [(ngModel)]="form.sex" class="seg">
-        <ion-segment-button value="male"><ion-label>Male</ion-label></ion-segment-button>
-        <ion-segment-button value="female"><ion-label>Female</ion-label></ion-segment-button>
-      </ion-segment>
-      <div class="row3">
-        <ion-item>
-          <ion-label position="stacked">Age</ion-label>
-          <ion-input type="number" inputmode="numeric" [(ngModel)]="form.age"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Height (cm)</ion-label>
-          <ion-input type="number" inputmode="numeric" [(ngModel)]="form.heightCm"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Weight (kg)</ion-label>
-          <ion-input type="number" inputmode="decimal" [(ngModel)]="form.weightKg"></ion-input>
-        </ion-item>
-      </div>
-      <p class="error" *ngIf="!valid">Check age (14–90), height (120–230 cm) and weight (30–250 kg).</p>
-      <ion-item>
-        <ion-label position="stacked">Activity</ion-label>
-        <ion-select [(ngModel)]="form.activity" interface="action-sheet">
-          <ion-select-option *ngFor="let a of activities" [value]="a.id">{{ a.label }} (×{{ a.factor }})</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stat"><ion-icon name="flame" class="hot"></ion-icon><b>{{ stats.streak }}</b><span>day streak</span></div>
+    <div class="stat"><ion-icon name="restaurant"></ion-icon><b>{{ stats.foodsLogged }}</b><span>foods logged</span></div>
+    <div class="stat"><ion-icon name="water" class="wet"></ion-icon><b>{{ stats.litres | number: '1.0-1' }}</b><span>litres drunk</span></div>
   </section>
 
-  <section class="card">
-    <h2 class="card-title">Goal</h2>
-    <ion-segment [ngModel]="form.goal" (ngModelChange)="setGoal($event)" class="seg">
-      <ion-segment-button *ngFor="let g of goals" [value]="g.id"><ion-label>{{ g.label }}</ion-label></ion-segment-button>
-    </ion-segment>
-    <p class="explain">Calories: maintenance {{ goalPct }}.</p>
-
-    <ion-item lines="none" class="range-item">
-      <ion-label position="stacked">Protein: <b>{{ form.proteinPerKg | number: '1.1-1' }} g per kg</b> = {{ t.protein }} g a day</ion-label>
-      <ion-range [(ngModel)]="form.proteinPerKg" [min]="1.2" [max]="2.6" [step]="0.1" [snaps]="true">
-        <ion-label slot="start">1.2</ion-label>
-        <ion-label slot="end">2.6</ion-label>
-      </ion-range>
+  <!-- Health -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Health &amp; goals</ion-label></ion-list-header>
+    <ion-item [button]="true" routerLink="/tabs/profile/targets" [detail]="true">
+      <ion-icon name="body-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Body &amp; goals</h3>
+        <p>{{ kcal | number }} kcal · {{ protein }} g protein a day</p>
+      </ion-label>
     </ion-item>
-    <p class="explain">Most lifters do well between 1.6 and 2.2 g per kg.</p>
-  </section>
+    <ion-item [button]="true" (click)="chooseDiet()" [detail]="true">
+      <ion-icon name="leaf-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Diet preference</h3>
+        <p>{{ dietLabel }} · filters food search</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Use lb and ft <span class="demo-badge">Demo</span></h3>
+        <p>Currently kg and cm</p>
+      </ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.units === 'imperial'" (ngModelChange)="setUnits($event)" aria-label="Use pounds and feet"></ion-toggle>
+    </ion-item>
+  </ion-list>
 
-  <div class="save">
-    <ion-button expand="block" size="large" (click)="save()" [disabled]="!dirty || !valid">
-      {{ dirty ? 'Save targets' : 'Targets saved' }}
+  <!-- Reminders -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Reminders <span class="demo-badge">Demo</span></ion-label></ion-list-header>
+    <ion-item>
+      <ion-icon name="alarm-outline" slot="start"></ion-icon>
+      <ion-label><h3>Meal logging</h3><p>9 AM, 2 PM and 9 PM</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.meals" (ngModelChange)="setNotify('meals', $event)" aria-label="Meal logging reminders"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="water-outline" slot="start"></ion-icon>
+      <ion-label><h3>Drink water</h3><p>Every 2 hours, 8 AM to 10 PM</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.water" (ngModelChange)="setNotify('water', $event)" aria-label="Water reminders"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+      <ion-label><h3>Weekly report</h3><p>Sunday evening summary</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.weekly" (ngModelChange)="setNotify('weekly', $event)" aria-label="Weekly report"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <!-- App -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>App</ion-label></ion-list-header>
+    <ion-item [button]="true" (click)="chooseTheme()" [detail]="true">
+      <ion-icon name="contrast-outline" slot="start"></ion-icon>
+      <ion-label><h3>Theme</h3><p>{{ themeLabel }}</p></ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="exportData()" [detail]="false">
+      <ion-icon name="download-outline" slot="start"></ion-icon>
+      <ion-label><h3>Export my data <span class="demo-badge">Demo</span></h3><p>Meals, water and weigh-ins as a file</p></ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="confirm('demo')" [detail]="false">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      <ion-label><h3>Reload sample data</h3><p>Restore Rahul's sample meals and weigh-ins</p></ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="confirm('clear')" [detail]="false">
+      <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+      <ion-label color="danger"><h3>Delete all logs</h3></ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Support -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Help &amp; info</ion-label></ion-list-header>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/help" [detail]="true">
+      <ion-icon name="help-circle-outline" slot="start"></ion-icon><ion-label>Help &amp; FAQ</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/privacy" [detail]="true">
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon><ion-label>Privacy</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/terms" [detail]="true">
+      <ion-icon name="document-text-outline" slot="start"></ion-icon><ion-label>Terms of use</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/about" [detail]="true">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon><ion-label>About efacm</ion-label>
+      <ion-note slot="end">v{{ version }}</ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div class="logout">
+    <ion-button expand="block" fill="outline" color="danger" (click)="confirm('logout')">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>Log out
     </ion-button>
   </div>
-
-  <section class="card">
-    <h2 class="card-title">How this is calculated</h2>
-    <ul class="how">
-      <li><b>BMR</b> (Mifflin–St Jeor): 10 × weight + 6.25 × height − 5 × age, +5 for men or −161 for women.</li>
-      <li><b>Maintenance</b> = BMR × activity factor.</li>
-      <li><b>Target</b> = maintenance −20% to lose fat, +10% to build muscle (never below 1,500 kcal for men or 1,200 for women).</li>
-      <li><b>Fat</b> = 25% of calories (at least 0.6 g per kg). <b>Carbs</b> fill the rest.</li>
-      <li><b>Water</b> = 35 ml per kg, +500 ml on gym days.</li>
-    </ul>
-  </section>
-
-  <section class="card data">
-    <h2 class="card-title">Data on this phone</h2>
-    <ion-button expand="block" fill="outline" (click)="confirmReset('demo')">Reload sample data</ion-button>
-    <ion-button expand="block" fill="clear" color="danger" (click)="confirmReset('clear')">Delete all data</ion-button>
-  </section>
+  <p class="foot">efacm v{{ version }} · demo build</p>
 </ion-content>

@@ -5,7 +5,7 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       { path: 'today', loadChildren: () => import('../today/today.module').then(m => m.TodayPageModule) },
@@ -16,8 +16,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'today', pathMatch: 'full' },
     ],
   },
-  { path: '', redirectTo: 'tabs/today', pathMatch: 'full' },
-  { path: '**', redirectTo: 'tabs/today' },
 ];
 
 @NgModule({

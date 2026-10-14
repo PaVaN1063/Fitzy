@@ -40,6 +40,8 @@
       </ion-chip>
     </div>
 
+    <p class="diet-note" *ngIf="dietNote">{{ dietNote }} · change in Profile › Diet preference</p>
+
     <div class="actions">
       <ion-button fill="outline" size="small" (click)="openScanner()">
         <ion-icon slot="start" name="scan-outline"></ion-icon>Scan product
