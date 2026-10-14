@@ -106,10 +106,12 @@ export class ProgressPage implements OnInit, OnDestroy {
     for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) {
       this.yTicks.push({ y: y(v), label: v.toFixed(step < 1 ? 1 : 0) });
     }
+    // Count back from the newest point so the latest date is always labelled and labels never crowd.
     const every = Math.ceil(points.length / 5);
+    const last = points.length - 1;
     this.xLabels = points
       .map((p, i) => ({ x: x(i), label: shortDate(p.date), i }))
-      .filter(l => l.i % every === 0 || l.i === points.length - 1)
+      .filter(l => (last - l.i) % every === 0)
       .map(({ x: lx, label }) => ({ x: lx, label }));
   }
 
