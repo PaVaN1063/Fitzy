@@ -1,0 +1,53 @@
+.strip-bar { --min-height: 64px; }
+.strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 8px 6px; }
+.strip-day {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 0; border-radius: 12px; background: transparent; color: var(--ion-text-color);
+  font-family: inherit; cursor: pointer;
+  .wd { font-size: 11px; color: var(--ion-color-medium); text-transform: uppercase; letter-spacing: .04em; }
+  .dn { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .mark { width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+  .mark.logged { background: var(--ion-color-primary); }
+  &.on { background: var(--ion-color-primary); color: var(--ion-color-primary-contrast); }
+  &.on .wd { color: inherit; opacity: .85; }
+  &.on .mark.logged { background: var(--ion-color-primary-contrast); }
+  &:focus-visible { outline: 2px solid var(--ion-color-primary); outline-offset: 2px; }
+}
+
+.summary { padding: 16px; }
+.ring-row { display: flex; align-items: center; gap: 18px; }
+.ring-num { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.ring-cap { font-size: 12px; color: var(--ion-color-medium); }
+.kcal-facts {
+  flex: 1; display: flex; flex-direction: column; gap: 8px;
+  > div { display: flex; justify-content: space-between; align-items: center; }
+  span { color: var(--ion-color-medium); font-size: 14px; }
+  b { font-size: 18px; font-variant-numeric: tabular-nums; }
+}
+.macro-list { display: grid; gap: 12px; margin-top: 16px; }
+
+.water-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.drop { font-size: 26px; color: var(--ion-color-secondary); flex: none; }
+.water-text {
+  flex: 1; min-width: 0; font-size: 14px; color: var(--ion-color-medium); cursor: pointer;
+  b { color: var(--ion-text-color); font-variant-numeric: tabular-nums; }
+}
+.water-track {
+  height: 5px; border-radius: 3px; margin-top: 6px; background: var(--ion-color-step-100, #e9ecef); overflow: hidden;
+  div { height: 100%; max-width: 100%; background: var(--ion-color-secondary); border-radius: 3px; }
+}
+.copy { text-align: center; }
+
+.meal { padding: 4px 0 4px; }
+.meal-head {
+  display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px;
+  ion-icon { font-size: 20px; color: var(--ion-color-primary); }
+  h2 { margin: 0; font-size: 17px; font-weight: 600; flex: 1; }
+}
+.meal-kcal, .entry-kcal { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ion-text-color); }
+.meal-kcal { font-size: 14px; }
+.meal ion-list { background: transparent; padding: 0; }
+.meal ion-item { --background: transparent; }
+.meal-empty { margin: 4px 16px; color: var(--ion-color-medium); font-size: 14px; }
+.add { margin: 0 6px 4px; }
+.foot-note { text-align: center; font-size: 12px; color: var(--ion-color-medium); margin: 8px 0 24px; }

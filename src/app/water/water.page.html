@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Water</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="card hero">
+    <svg class="glass" viewBox="0 0 160 200" role="img" [attr.aria-label]="pct + '% of daily water goal'">
+      <defs>
+        <clipPath id="glassClip">
+          <path d="M22 22 L138 22 L124 182 Q123 190 115 190 L45 190 Q37 190 36 182 Z"></path>
+        </clipPath>
+      </defs>
+      <path class="glass-body" d="M22 22 L138 22 L124 182 Q123 190 115 190 L45 190 Q37 190 36 182 Z"></path>
+      <g clip-path="url(#glassClip)">
+        <rect class="water" x="0" [attr.y]="fillY" width="160" height="200"></rect>
+        <path class="wave" [attr.transform]="'translate(0 ' + (fillY - 6) + ')'"
+              d="M0 6 Q20 0 40 6 T80 6 T120 6 T160 6 V12 H0 Z"></path>
+      </g>
+      <path class="glass-rim" d="M22 22 L138 22 L124 182 Q123 190 115 190 L45 190 Q37 190 36 182 Z"></path>
+    </svg>
+
+    <div class="numbers">
+      <div class="pct">{{ pct }}<span>%</span></div>
+      <div class="amt"><b>{{ total | number }}</b> / {{ goal | number }} ml</div>
+      <div class="left" *ngIf="left > 0">{{ left | number }} ml to go</div>
+      <div class="left done" *ngIf="left === 0 && goal > 0">Goal reached</div>
+      <ion-button fill="clear" size="small" color="medium" (click)="undo()" [disabled]="!log.length">
+        <ion-icon slot="start" name="arrow-undo-outline"></ion-icon>Undo last
+      </ion-button>
+    </div>
+  </section>
+
+  <section class="presets">
+    <button *ngFor="let p of presets" class="preset" (click)="add(p.ml)">
+      <ion-icon [name]="p.icon"></ion-icon>
+      <b>+{{ p.ml }}</b>
+      <span>{{ p.label }}</span>
+    </button>
+  </section>
+
+  <section class="card custom">
+    <ion-item lines="none">
+      <ion-input type="number" inputmode="numeric" placeholder="Other amount (ml)" [(ngModel)]="custom"
+                 (keyup.enter)="addCustom()" aria-label="Other amount in ml"></ion-input>
+      <ion-button slot="end" (click)="addCustom()" [disabled]="!custom">Add</ion-button>
+    </ion-item>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">How your goal is set</h2>
+    <p class="explain">
+      35 ml × {{ weightKg }} kg body weight<span *ngIf="gymDay"> + 500 ml because today is a gym day</span>
+      = <b>{{ goal | number }} ml</b>. Turn on “Gym day” on the Meals tab on training days.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Last 7 days <span class="sub">Goal met {{ daysMet }} of 7</span></h2>
+    <div class="bars">
+      <div class="bar-col" *ngFor="let b of week">
+        <div class="bar-val">{{ b.ml / 1000 | number: '1.1-1' }}</div>
+        <div class="bar-track"><div class="bar" [class.met]="b.met" [style.height.%]="b.pct"></div></div>
+        <div class="bar-day" [class.today]="b.key === date">{{ b.label }}</div>
+      </div>
+    </div>
+    <p class="axis-note">Litres per day; full bar = that day's goal</p>
+  </section>
+
+  <section class="card" *ngIf="log.length">
+    <h2 class="card-title">Today</h2>
+    <ion-list lines="inset">
+      <ion-item *ngFor="let w of log">
+        <ion-icon name="water" slot="start" color="secondary"></ion-icon>
+        <ion-label>{{ w.ml }} ml</ion-label>
+        <ion-note slot="end">{{ time(w.at) }}</ion-note>
+      </ion-item>
+    </ion-list>
+  </section>
+
+  <section class="card demo">
+    <ion-item lines="none">
+      <ion-icon name="notifications-outline" slot="start"></ion-icon>
+      <ion-label class="ion-text-wrap">
+        <h3>Drink reminders <span class="demo-badge">Demo</span></h3>
+        <p>Every 2 hours, 8 AM to 10 PM</p>
+      </ion-label>
+      <ion-toggle slot="end" [ngModel]="reminders" (ngModelChange)="toggleReminders($event)"></ion-toggle>
+    </ion-item>
+  </section>
+</ion-content>
