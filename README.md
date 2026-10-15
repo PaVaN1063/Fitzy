@@ -1,49 +1,151 @@
-# Fitzy
+<div align="center">
 
-**Eat. Train. Track.** A meal, protein and water tracker for people who lift, built around Indian home food.
+<img src="docs/banner.png" alt="Fitzy — Eat. Train. Track. A meal, protein and water tracker for lifters, built around Indian home food" width="100%" />
 
-Built with Ionic 6, Angular 15 and Capacitor 4 (Android).
+<br />
+
+![Angular](https://img.shields.io/badge/Angular-15-DD0031?style=flat-square&logo=angular&logoColor=white)
+![Ionic](https://img.shields.io/badge/Ionic-6-3880FF?style=flat-square&logo=ionic&logoColor=white)
+![Capacitor](https://img.shields.io/badge/Capacitor-4-119EFF?style=flat-square&logo=capacitor&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-Android-3DDC84?style=flat-square&logo=android&logoColor=white)
+![Data](https://img.shields.io/badge/data-on%20device-11A36A?style=flat-square)
+
+**Count your roti, dal and whey. Hit your protein. Drink enough water. Watch the trend, not the scale.**
+
+[Features](#features) · [Screens](#screens) · [How targets work](#how-your-targets-are-worked-out) · [Run it](#run-it) · [Roadmap](#roadmap)
+
+</div>
+
+<br />
+
+<p align="center">
+  <img src="docs/hero.png" alt="Three Fitzy screens: progress with the BMI gauge, today's meals with the calorie ring, and the water tracker" width="100%" />
+</p>
+
+## Why Fitzy
+
+Most calorie apps are built for burgers and bagels. Fitzy is built for people who train and eat **idli-sambar for breakfast, roti-dal-sabzi for lunch and a whey shake after the gym**. It turns your body details into clear daily targets, makes logging a meal a two-tap job, and shows whether the week is actually working.
 
 ## Features
 
-- **Sign-in** with mobile number and a one-time code, then a short "about you" step (name, gender, age, weight, height)
-- **Meals**: day strip, calorie ring, protein/carb/fat bars, 46 built-in Indian and gym foods, custom foods, copy the previous day
-- **Targets**: calories from the Mifflin–St Jeor formula, activity level and goal; protein in g per kg; BMI gauge with the healthy weight range
-- **Water**: goal of 35 ml per kg (+500 ml on gym days), quick-add buttons, 7-day chart
-- **Progress**: weigh-ins with a 7-day average trend, weekly summary, coach notes, front/side/back progress photos
-- **Profile**: photo, diet preference (filters food search), theme, data backup to the clipboard
-- All data is stored on the phone
+| Feature | What it does |
+|---|---|
+| 🍛 **Meals** | Day strip, calorie ring, protein / carb / fat bars, 46 built-in Indian and gym foods in home-style portions, custom foods, "copy the day before" |
+| 🎯 **Targets** | Calories from the Mifflin–St Jeor formula, your activity level and goal (lose fat, maintain, build muscle); protein set in g per kg |
+| 💧 **Water** | Goal of 35 ml per kg, +500 ml on gym days; one-tap glass, bottle and shaker; 7-day chart |
+| 📈 **Progress** | Weigh-ins with a 7-day average trend line, weekly summary, coach notes, front / side / back progress photos |
+| ⚖️ **BMI gauge** | Half-circle gauge with WHO bands and the healthy weight range for your height |
+| 🔐 **Sign-in** | Mobile number + one-time code in a slide-up drawer, then a short "about you" step |
+| 👤 **Profile** | Photo, diet preference (veg / eggetarian filters food search), light or dark theme, data backup |
+| 📱 **Private** | Everything is stored on the phone; nothing is uploaded |
+
+<p align="center">
+  <img src="docs/journey.png" alt="Sign-up flow in five steps: splash, mobile number, verification code, about you, and the Meals screen" width="100%" />
+</p>
+
+## Screens
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screens/05-meals.png" alt="Meals: calorie ring and macro bars" width="240" /><br /><b>Today</b><br /><sub>Calories left, macros and water at a glance</sub></td>
+    <td align="center" width="33%"><img src="docs/screens/06-meals-log.png" alt="Meals: food log by meal" width="240" /><br /><b>Meal log</b><br /><sub>Breakfast, lunch, snacks and dinner</sub></td>
+    <td align="center" width="33%"><img src="docs/screens/07-food-search.png" alt="Food search sheet" width="240" /><br /><b>Add food</b><br /><sub>Search, filter by category, recent foods</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screens/08-food-qty.png" alt="Choosing a portion" width="240" /><br /><b>Pick a portion</b><br /><sub>Half-serving steps with a live macro preview</sub></td>
+    <td align="center"><img src="docs/screens/09-water.png" alt="Water tracker" width="240" /><br /><b>Water</b><br /><sub>Glass fill, quick adds and a 7-day chart</sub></td>
+    <td align="center"><img src="docs/screens/10-progress.png" alt="Weight trend" width="240" /><br /><b>Progress</b><br /><sub>Daily weigh-ins and the 7-day average</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screens/11-bmi.png" alt="BMI gauge and weekly summary" width="240" /><br /><b>BMI &amp; this week</b><br /><sub>Where you stand and how the week went</sub></td>
+    <td align="center"><img src="docs/screens/14-body-goals.png" alt="Body and goals calculator" width="240" /><br /><b>Body &amp; goals</b><br /><sub>Targets update as you type</sub></td>
+    <td align="center"><img src="docs/screens/13-profile.png" alt="Profile" width="240" /><br /><b>Profile</b><br /><sub>Streak, totals, reminders and settings</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screens/12-scan.png" alt="Product scan result" width="240" /><br /><b>Scan</b><br /><sub>Point at a pack to add it</sub></td>
+    <td align="center"><img src="docs/screens/15-meals-dark.png" alt="Meals in dark theme" width="240" /><br /><b>Dark theme</b><br /><sub>Follows the phone, or pick light or dark</sub></td>
+    <td align="center"><img src="docs/screens/01-splash.png" alt="Splash screen" width="240" /><br /><b>Splash</b><br /><sub>Animated logo and loading bar</sub></td>
+  </tr>
+</table>
+
+## How your targets are worked out
+
+| What | Formula |
+|---|---|
+| Resting burn (BMR) | Mifflin–St Jeor: `10 × kg + 6.25 × cm − 5 × age`, then `+5` for men, `−161` for women, `−78` for other |
+| Maintenance (TDEE) | `BMR × activity` (1.2 desk job → 1.9 hard training + physical job) |
+| Daily calories | Maintenance `−20%` to lose fat, `+10%` to build muscle; never below 1,500 kcal (men) or 1,200 kcal |
+| Protein | `kg × g per kg` (default 2.2 cutting, 1.8 maintaining, 2.0 bulking) |
+| Fat / carbs | Fat 25% of calories (at least 0.6 g per kg); carbs fill the rest |
+| Water | `35 ml × kg`, `+500 ml` on gym days |
+| BMI | `kg ÷ m²`; WHO bands: under 18.5, 18.5–24.9 healthy, 25–29.9 overweight, 30+ obese |
+
+For example, a 28-year-old man at 178 cm and 82 kg who trains 3–5 days a week and wants to lose fat gets **2,229 kcal and 180 g protein a day**, and a water goal of **3.35 L** on gym days.
 
 ## Run it
 
+You need Node.js 16 or 18 (Angular 15 supports Node 14.20, 16 and 18).
+
 ```bash
+git clone https://github.com/PaVaN1063/Fitzy.git
+cd Fitzy
 npm install
-npx ionic serve          # browser, http://localhost:8100
+npx ionic serve        # opens http://localhost:8100
 ```
 
-Android:
+On Android:
 
 ```bash
 npx ionic build
 npx cap sync android
-npx cap open android     # opens Android Studio
+npx cap open android   # build and run from Android Studio
 ```
 
-## Not connected yet
-
-| Feature | Where | What's needed |
-|---|---|---|
-| OTP by SMS | `src/app/core/auth.service.ts` | An SMS provider; any 4-digit code is accepted for now |
-| Reminders | `profile.page.ts`, `water.page.ts` | `@capacitor/local-notifications` |
-| Product scan | `src/app/scan/scan.page.ts` | ML Kit barcode scanning or a vision API |
-
-New accounts start with two weeks of realistic history so every screen is filled in. Set `SEED_HISTORY = false` in `src/app/core/tracker.service.ts` to start empty.
+The app ID is `com.fitzy.app`.
 
 ## Project layout
 
 ```
-src/app/core      data model, calculations, storage, auth
-src/app/shared    calorie ring, macro bars, BMI gauge, food search sheet
-src/app/<page>    splash, login, today (Meals), water, scan, progress, profile, targets
-resources/        logo source and generated icon masters
+src/app/
+├── core/        data model, nutrition formulas, dates, storage, sign-in
+├── shared/      calorie ring, macro bars, BMI gauge, food search sheet
+├── splash/      animated launch screen
+├── login/       mobile number, OTP drawer, about-you step
+├── tabs/        bottom navigation
+├── today/       Meals
+├── water/       Water
+├── scan/        product scan
+├── progress/    weight trend, BMI, weekly summary, photos
+├── profile/     profile, edit profile, help and policy pages
+└── targets/     body and goals calculator
+resources/       logo source and icon masters
+docs/            README images
 ```
+
+## Roadmap
+
+- [x] Meals, targets, water, progress and profile
+- [x] Mobile number sign-in with an "about you" step
+- [x] BMI gauge, progress photos, dark theme
+- [ ] Send the OTP by SMS (any 4-digit code is accepted for now, see `core/auth.service.ts`)
+- [ ] Reminder notifications with `@capacitor/local-notifications` (switches save the choice today)
+- [ ] Real product recognition with ML Kit barcode scanning or a vision API (`scan/scan.page.ts`)
+- [ ] Cloud sync and backup
+- [ ] iOS build
+
+New accounts start with two weeks of history fitted to the person's own targets, so every screen is filled in. Set `SEED_HISTORY = false` in `src/app/core/tracker.service.ts` to start empty.
+
+## Credits
+
+- Fonts: [Outfit](https://fonts.google.com/specimen/Outfit) (SIL Open Font License, bundled in `src/assets/fonts`) and Roboto
+- Icons: [Ionicons](https://ionic.io/ionicons)
+- Food values: approximate, for home-style portions
+
+<div align="center">
+<br />
+<img src="src/assets/icon/logo.png" alt="Fitzy logo" width="56" />
+
+**Fitzy** · made in India by [Pavan Kumar Naraharisetti](https://github.com/PaVaN1063)
+
+</div>
