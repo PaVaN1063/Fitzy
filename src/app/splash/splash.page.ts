@@ -12,7 +12,7 @@ const STEPS = ['Warming up', 'Loading your meals', 'Counting your water', 'Ready
   styleUrls: ['./splash.page.scss'],
 })
 export class SplashPage {
-  readonly letters = 'efacm'.split('');
+  readonly letters = 'Fitzy'.split('');
   status = STEPS[0];
 
   private timers: ReturnType<typeof setTimeout>[] = [];

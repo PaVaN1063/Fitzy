@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.fitzy.app;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -17,7 +17,7 @@ interface AppState {
   photos: { [slot in PhotoSlot]?: ProgressPhoto };
 }
 
-const STORAGE_KEY = 'efacm.state.v4';
+const STORAGE_KEY = 'fitzy.state.v1';
 
 /**
  * When true, a new account starts with two weeks of realistic history (meals, water,

@@ -27,15 +27,15 @@ const TOPICS: { [key: string]: Topic } = {
   terms: {
     title: 'Terms of use',
     sections: [
-      { h: 'Not medical advice', p: ['efacm gives general estimates for fitness tracking. It is not a substitute for advice from a doctor or registered dietitian, especially if you have a medical condition, are pregnant, or are under 18.'] },
+      { h: 'Not medical advice', p: ['Fitzy gives general estimates for fitness tracking. It is not a substitute for advice from a doctor or registered dietitian, especially if you have a medical condition, are pregnant, or are under 18.'] },
       { h: 'Estimates', p: ['Food values are approximate for home-style portions and will differ from what you actually eat.'] },
-      { h: 'The app', p: ['efacm is free to use and is provided as is, without warranty.'] },
+      { h: 'The app', p: ['Fitzy is free to use and is provided as is, without warranty.'] },
     ],
   },
   about: {
-    title: 'About efacm',
+    title: 'About Fitzy',
     sections: [
-      { h: 'Eat. Train. Track.', p: ['efacm is a simple meal, protein and water tracker for people who lift, built around Indian home food.'] },
+      { h: 'Eat. Train. Track.', p: ['Fitzy is a simple meal, protein and water tracker for people who lift, built around Indian home food.'] },
       { h: 'Built with', p: ['Ionic 6, Angular 15 and Capacitor 4.'] },
       { h: 'Version', p: ['1.0.0'] },
     ],

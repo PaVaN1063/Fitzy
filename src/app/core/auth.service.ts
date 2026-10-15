@@ -12,7 +12,7 @@ export interface Session {
 
 export type VerifyResult = 'existing' | 'new' | 'wrong-code';
 
-const SESSION_KEY = 'efacm.session.v3';
+const SESSION_KEY = 'fitzy.session.v1';
 export const OTP_LENGTH = 4;
 
 /**
