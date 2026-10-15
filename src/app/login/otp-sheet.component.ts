@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
-import { AuthService, DEMO_OTP, OTP_LENGTH, VerifyResult, formatPhone } from '../core/auth.service';
+import { AuthService, OTP_LENGTH, VerifyResult, formatPhone } from '../core/auth.service';
 
 type State = 'typing' | 'checking' | 'error' | 'success';
 
@@ -19,7 +19,6 @@ export class OtpSheetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('codeInput') codeInput?: ElementRef<HTMLInputElement>;
 
   readonly slots = Array.from({ length: OTP_LENGTH }, (_, i) => i);
-  readonly demoCode = DEMO_OTP;
 
   code = '';
   state: State = 'typing';
@@ -66,10 +65,6 @@ export class OtpSheetComponent implements AfterViewInit, OnDestroy {
     }
     if (this.state === 'error') { this.state = 'typing'; }
     if (digits.length === OTP_LENGTH) { this.verify(); }
-  }
-
-  useDemoCode(): void {
-    this.onInput(DEMO_OTP);
   }
 
   verify(): void {

@@ -3,6 +3,8 @@ import { ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { lastNDays, shortDate, todayKey } from '../core/dates';
+import { readImage } from '../core/image';
+import { PhotoSlot, ProgressPhoto } from '../core/models';
 import { round1, sumMacros, targets, waterGoalMl, weightTrend } from '../core/nutrition';
 import { TrackerService } from '../core/tracker.service';
 
@@ -38,6 +40,15 @@ export class ProgressPage implements OnInit, OnDestroy {
 
   week = { avgKcal: 0, targetKcal: 0, avgProtein: 0, targetProtein: 0, proteinDays: 0, loggedDays: 0, gymDays: 0, waterDays: 0 };
   notes: string[] = [];
+  heightCm = 0;
+  weightKg = 0;
+  readonly slots: { id: PhotoSlot; label: string }[] = [
+    { id: 'front', label: 'Front' },
+    { id: 'side', label: 'Side' },
+    { id: 'back', label: 'Back' },
+  ];
+  photos: { [slot in PhotoSlot]?: ProgressPhoto } = {};
+  private pickSlot: PhotoSlot = 'front';
 
   private sub?: Subscription;
 
@@ -66,8 +77,31 @@ export class ProgressPage implements OnInit, OnDestroy {
     this.tracker.removeWeight(date);
   }
 
-  demoPhoto(): void {
-    this.say('Demo: progress photos are not saved in this version');
+  /** Opens the gallery or camera for one photo slot. */
+  pickPhoto(slot: PhotoSlot, input: HTMLInputElement): void {
+    this.pickSlot = slot;
+    input.click();
+  }
+
+  async onPhoto(input: HTMLInputElement): Promise<void> {
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) { return; }
+    try {
+      this.tracker.setPhoto(this.pickSlot, await readImage(file, 480, 0.78));
+      this.say('Photo saved');
+    } catch {
+      this.say('Could not use that photo. Try another one.');
+    }
+  }
+
+  removePhoto(slot: PhotoSlot): void {
+    this.tracker.removePhoto(slot);
+  }
+
+  photoDate(slot: PhotoSlot): string {
+    const p = this.photos[slot];
+    return p ? shortDate(p.date) : '';
   }
 
   private refresh(): void {
@@ -79,6 +113,9 @@ export class ProgressPage implements OnInit, OnDestroy {
     this.avg7 = trend.length ? trend[trend.length - 1].avg : null;
     this.change = recent.length > 1 ? round1(recent[recent.length - 1].avg - recent[0].avg) : null;
     this.history = [...weights].reverse().slice(0, 30).map(w => ({ ...w, label: shortDate(w.date) }));
+    this.heightCm = this.tracker.profile.heightCm;
+    this.weightKg = this.latest ?? this.tracker.profile.weightKg;
+    this.photos = this.tracker.photos;
 
     this.buildChart(recent);
     this.buildWeek();

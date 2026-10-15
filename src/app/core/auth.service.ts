@@ -12,20 +12,16 @@ export interface Session {
 
 export type VerifyResult = 'existing' | 'new' | 'wrong-code';
 
-const SESSION_KEY = 'efacm.session.v2';
-
-/** The sample account's number and the demo verification code. */
-export const DEMO_PHONE = '9876543210';
-export const DEMO_OTP = '1234';
+const SESSION_KEY = 'efacm.session.v3';
 export const OTP_LENGTH = 4;
 
 /**
- * DEMO phone login. No SMS is sent: the code is always DEMO_OTP.
- * The sample number opens Rahul's account; any other number creates a new account.
+ * Phone sign-in. There is no SMS backend yet, so any 4-digit code is accepted.
+ * A number that already has an account on this phone signs straight in; a new number
+ * goes on to the profile details step.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  /** Number waiting for, or past, OTP verification. */
   private pendingPhone = '';
   private verifiedPhone = '';
 
@@ -44,26 +40,17 @@ export class AuthService {
     return this.session !== null;
   }
 
-  /** The number that passed OTP and still needs profile details (sign-up). */
-  get phoneAwaitingDetails(): string {
-    return this.verifiedPhone;
-  }
-
-  /** Demo: pretends to text a code to the number. */
   requestOtp(phone: string): void {
     this.pendingPhone = digitsOnly(phone);
     this.verifiedPhone = '';
   }
 
   verifyOtp(code: string): VerifyResult {
-    if (code !== DEMO_OTP || !this.pendingPhone) { return 'wrong-code'; }
+    // TODO: verify the code with an SMS provider once a backend exists.
+    if (!/^\d+$/.test(code) || code.length !== OTP_LENGTH || !this.pendingPhone) { return 'wrong-code'; }
     const phone = this.pendingPhone;
-    if (phone === this.tracker.profile.phone) {
-      this.start(phone);
-      return 'existing';
-    }
-    if (phone === DEMO_PHONE) {
-      this.tracker.resetToDemo();
+    const p = this.tracker.profile;
+    if (p.phone === phone && p.name) {
       this.start(phone);
       return 'existing';
     }

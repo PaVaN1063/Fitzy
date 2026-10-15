@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 
-import { AuthService, DEMO_PHONE, VerifyResult, digitsOnly, formatPhone } from '../core/auth.service';
+import { AuthService, VerifyResult, digitsOnly, formatPhone } from '../core/auth.service';
 import { Sex } from '../core/models';
 import { targets } from '../core/nutrition';
 import { TrackerService } from '../core/tracker.service';
@@ -9,7 +9,7 @@ import { OtpSheetComponent } from './otp-sheet.component';
 
 type Step = 'phone' | 'details';
 
-/** Phone + OTP login (demo), then name and body details for new accounts. */
+/** Phone + OTP login, then name and body details for new accounts. */
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -21,7 +21,6 @@ export class LoginPage {
     { id: 'female', label: 'Female', icon: 'female' },
     { id: 'other', label: 'Other', icon: 'male-female' },
   ];
-  readonly demoPhone = formatPhone(DEMO_PHONE);
 
   step: Step = 'phone';
   phone = '';
@@ -57,10 +56,6 @@ export class LoginPage {
     if (d.length > 10 && d.startsWith('91')) { d = d.slice(2); }
     this.phone = d.slice(0, 10);
     if (el.value !== this.phone) { el.value = this.phone; }
-  }
-
-  useDemoNumber(): void {
-    this.phone = DEMO_PHONE;
   }
 
   async sendCode(): Promise<void> {

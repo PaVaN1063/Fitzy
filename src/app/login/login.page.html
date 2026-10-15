@@ -25,16 +25,13 @@
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
 
-      <button class="demo-card" type="button" (click)="useDemoNumber()">
-        <span class="demo-badge">Demo</span>
-        <span class="demo-text">
-          <b>Use the sample account</b>
-          <span>{{ demoPhone }} · Rahul's two weeks of meals</span>
-        </span>
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
+      <div class="perks">
+        <span><ion-icon name="restaurant-outline"></ion-icon>Indian meals</span>
+        <span><ion-icon name="water-outline"></ion-icon>Water</span>
+        <span><ion-icon name="barbell-outline"></ion-icon>Protein goals</span>
+      </div>
 
-      <p class="fine">Any other number creates a new account on this phone. Demo app: no SMS is sent and nothing goes to a server.</p>
+      <p class="fine">By continuing you agree to our Terms of use and Privacy policy.</p>
     </div>
   </ng-container>
 

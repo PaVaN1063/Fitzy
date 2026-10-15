@@ -3,6 +3,8 @@
 .avatar {
   width: 64px; height: 64px; border-radius: 50%; flex: none; display: grid; place-items: center;
   background: linear-gradient(150deg, #19b878, #0b7d52); color: #fff; font-size: 22px; font-weight: 700; letter-spacing: .02em;
+  overflow: hidden;
+  img { width: 100%; height: 100%; object-fit: cover; }
 }
 .who-text {
   flex: 1; min-width: 0;

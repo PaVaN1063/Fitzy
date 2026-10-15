@@ -39,15 +39,14 @@
 @keyframes pop { from { transform: scale(.3); } to { transform: none; } }
 
 .primary { --border-radius: 16px; height: 54px; margin-top: 16px; font-weight: 600; }
-.demo-card {
-  display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 16px; padding: 12px 14px;
-  border-radius: 14px; border: 1px dashed var(--ion-color-step-250, #c7ccd3); background: transparent;
-  color: var(--ion-text-color); text-align: left; font: inherit; cursor: pointer;
-  ion-icon { color: var(--ion-color-primary); font-size: 20px; flex: none; }
-  &:focus-visible { outline: 2px solid var(--ion-color-primary); outline-offset: 2px; }
+.perks {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+  span {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px;
+    background: rgba(var(--ion-color-primary-rgb), .1); color: var(--ion-color-primary-shade); font-size: 12px; font-weight: 600;
+  }
+  ion-icon { font-size: 15px; }
 }
-.demo-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
-.demo-text span { font-size: 12px; color: var(--ion-color-medium); }
 .fine { margin: 16px 4px 4px; font-size: 12px; line-height: 1.5; color: var(--ion-color-medium); text-align: center; }
 
 /* ---- step 2 ---- */

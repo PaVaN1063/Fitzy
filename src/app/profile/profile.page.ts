@@ -110,28 +110,27 @@ export class ProfilePage implements OnInit, OnDestroy {
     await s.present();
   }
 
-  setUnits(imperial: boolean): void {
-    this.tracker.updateSettings({ units: imperial ? 'imperial' : 'metric' });
-    if (imperial) {
-      this.say('Demo: the app still shows kg and cm in this version');
-    }
-  }
-
   setNotify(key: 'meals' | 'water' | 'weekly', on: boolean): void {
+    // TODO: schedule with @capacitor/local-notifications; for now only the preference is saved.
     this.tracker.updateSettings({ notify: { ...this.settings.notify, [key]: on } });
-    if (on) {
-      this.say('Demo: reminders are not scheduled in this version');
+    const what = { meals: 'Meal reminders', water: 'Water reminders', weekly: 'Weekly report' }[key];
+    this.say(`${what} ${on ? 'on' : 'off'}`);
+  }
+
+  /** Copies everything stored on the phone, as JSON, to the clipboard. */
+  async exportData(): Promise<void> {
+    const json = this.tracker.exportJson();
+    const kb = Math.max(1, Math.round(json.length / 1024));
+    try {
+      await navigator.clipboard.writeText(json);
+      this.say(`Your data (${kb} KB) is copied. Paste it into a note or email to keep a backup.`);
+    } catch {
+      this.say('Could not copy your data. Please try again.');
     }
   }
 
-  async exportData(): Promise<void> {
-    const kb = Math.max(1, Math.round(this.tracker.exportJson().length / 1024));
-    this.say(`Demo: your data (${kb} KB) would be saved as a file here`);
-  }
-
-  async confirm(kind: 'demo' | 'clear' | 'logout'): Promise<void> {
+  async confirm(kind: 'clear' | 'logout'): Promise<void> {
     const copy = {
-      demo: { header: 'Reload sample data?', message: 'Your meals, water and weigh-ins will be replaced with the sample data for Rahul.', ok: 'Reload samples' },
       clear: { header: 'Delete all logs?', message: 'Every meal, water entry, weigh-in and custom food on this phone will be deleted. Your account details stay.', ok: 'Delete everything' },
       logout: { header: 'Log out?', message: 'Your data stays on this phone. Log back in any time.', ok: 'Log out' },
     }[kind];
@@ -144,7 +143,6 @@ export class ProfilePage implements OnInit, OnDestroy {
           text: copy.ok,
           role: kind === 'logout' ? 'confirm' : 'destructive',
           handler: () => {
-            if (kind === 'demo') { this.tracker.resetToDemo(); this.say('Sample data reloaded'); }
             if (kind === 'clear') { this.tracker.clearAll(); this.say('All logs deleted'); }
             if (kind === 'logout') { this.auth.logOut(); this.nav.navigateRoot('/login', { animationDirection: 'back' }); }
           },

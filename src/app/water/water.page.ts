@@ -38,7 +38,6 @@ export class WaterPage implements OnInit, OnDestroy {
   week: WaterBar[] = [];
   daysMet = 0;
   custom: number | null = null;
-  /** Demo only: reminders are not scheduled. */
   reminders = false;
 
   private sub?: Subscription;
@@ -97,11 +96,12 @@ export class WaterPage implements OnInit, OnDestroy {
     this.tracker.undoWater(this.date);
   }
 
+  /** Shares the "Drink water" switch on the Profile tab. */
   toggleReminders(on: boolean): void {
+    // TODO: schedule with @capacitor/local-notifications; for now only the preference is saved.
     this.reminders = on;
-    if (on) {
-      this.say('Demo: reminders are not active in this version');
-    }
+    this.tracker.updateSettings({ notify: { ...this.tracker.settings.notify, water: on } });
+    this.say(on ? 'Water reminders on' : 'Water reminders off');
   }
 
   time(at: number): string {
@@ -110,6 +110,7 @@ export class WaterPage implements OnInit, OnDestroy {
 
   private refresh(): void {
     const day = this.tracker.day(this.date);
+    this.reminders = this.tracker.settings.notify.water;
     this.weightKg = this.tracker.profile.weightKg;
     this.gymDay = day.gymDay;
     this.total = this.tracker.waterTotal(this.date);

@@ -79,14 +79,14 @@
     </ion-list>
   </section>
 
-  <section class="card demo">
+  <section class="card reminders">
     <ion-item lines="none">
       <ion-icon name="notifications-outline" slot="start"></ion-icon>
       <ion-label class="ion-text-wrap">
-        <h3>Drink reminders <span class="demo-badge">Demo</span></h3>
+        <h3>Drink reminders</h3>
         <p>Every 2 hours, 8 AM to 10 PM</p>
       </ion-label>
-      <ion-toggle slot="end" [ngModel]="reminders" (ngModelChange)="toggleReminders($event)"></ion-toggle>
+      <ion-toggle slot="end" [ngModel]="reminders" (ngModelChange)="toggleReminders($event)" aria-label="Drink reminders"></ion-toggle>
     </ion-item>
   </section>
 </ion-content>

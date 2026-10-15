@@ -35,10 +35,8 @@
   </ion-button>
 
   <div class="row">
-    <span class="resend" *ngIf="resendIn > 0">Resend code in 0:{{ resendIn < 10 ? '0' + resendIn : resendIn }}</span>
+    <span class="resend">Didn't get it?</span>
+    <span class="resend" *ngIf="resendIn > 0">Resend in 0:{{ resendIn < 10 ? '0' + resendIn : resendIn }}</span>
     <button class="link" type="button" *ngIf="resendIn === 0" (click)="resend()">Resend code</button>
-    <button class="demo" type="button" (click)="useDemoCode()">
-      <span class="demo-badge">Demo</span> Code is {{ demoCode }}
-    </button>
   </div>
 </ion-content>

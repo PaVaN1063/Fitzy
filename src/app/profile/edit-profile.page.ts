@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 
 import { formatPhone, isEmail } from '../core/auth.service';
+import { readImage } from '../core/image';
 import { TrackerService } from '../core/tracker.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { TrackerService } from '../core/tracker.service';
 })
 export class EditProfilePage {
   form = { name: '', email: '', phone: '', city: '' };
+  photo = '';
   error = '';
 
   constructor(private tracker: TrackerService, private nav: NavController, private toast: ToastController) {}
@@ -18,6 +20,7 @@ export class EditProfilePage {
   ionViewWillEnter(): void {
     const p = this.tracker.profile;
     this.form = { name: p.name, email: p.email, phone: formatPhone(p.phone), city: p.city };
+    this.photo = p.photo ?? '';
     this.error = '';
   }
 
@@ -31,14 +34,26 @@ export class EditProfilePage {
     const email = this.form.email.trim().toLowerCase();
     if (name.length < 2) { this.error = 'Enter your name'; return; }
     if (email && !isEmail(email)) { this.error = 'Enter a valid email address, or leave it empty'; return; }
-    this.tracker.updateProfile({ name, email, city: this.form.city.trim() });
+    this.tracker.updateProfile({ name, email, city: this.form.city.trim(), photo: this.photo || undefined });
     const t = await this.toast.create({ message: 'Profile saved', duration: 1500, position: 'top' });
     await t.present();
     this.nav.back();
   }
 
-  async changePhoto(): Promise<void> {
-    const t = await this.toast.create({ message: 'Demo: profile photos are not supported yet', duration: 1800, position: 'top' });
-    await t.present();
+  /** Called by the hidden file input; opens the gallery or camera on phones. */
+  async onPhoto(input: HTMLInputElement): Promise<void> {
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) { return; }
+    try {
+      this.photo = await readImage(file, 256);
+    } catch {
+      const t = await this.toast.create({ message: 'Could not use that photo. Try another one.', duration: 1800, position: 'top' });
+      await t.present();
+    }
+  }
+
+  removePhoto(): void {
+    this.photo = '';
   }
 }

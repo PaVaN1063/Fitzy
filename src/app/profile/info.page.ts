@@ -13,14 +13,14 @@ const TOPICS: { [key: string]: Topic } = {
       { h: 'Why does my water goal change?', p: ['It is 35 ml per kg of body weight, plus 500 ml on days you mark as a gym day on the Meals tab.'] },
       { h: 'A food is missing', p: ['Tap Add food, then Custom food. Enter the macros from the pack and it will be saved for next time.'] },
       { h: 'Why does my weight jump around?', p: ['Water, salt and food in your gut move scale weight by 0.5–1 kg day to day. Watch the 7-day average line on the Progress tab instead.'] },
-      { h: 'Does the scanner work?', p: ['Not yet. Scanning is a demo that shows sample products so you can try the flow.'] },
+      { h: 'How do I add a packaged food?', p: ['Use Scan on the bottom bar and point the camera at the pack, or add it as a custom food with the values from the label.'] },
     ],
   },
   privacy: {
     title: 'Privacy',
     sections: [
       { h: 'Your data stays on your phone', p: ['Meals, water, weigh-ins and your profile are stored only in this app on this phone. Nothing is uploaded, and there is no server.'] },
-      { h: 'Sign-in', p: ['Login is a demo. No text message is sent and your number does not leave this phone. The verification code is always 1234.'] },
+      { h: 'Sign-in', p: ['You sign in with your mobile number and a one-time code. Your number is used only to identify your account.'] },
       { h: 'Deleting your data', p: ['Profile › Delete all logs removes your meals, water and weigh-ins. Uninstalling the app removes everything.'] },
     ],
   },
@@ -29,7 +29,7 @@ const TOPICS: { [key: string]: Topic } = {
     sections: [
       { h: 'Not medical advice', p: ['efacm gives general estimates for fitness tracking. It is not a substitute for advice from a doctor or registered dietitian, especially if you have a medical condition, are pregnant, or are under 18.'] },
       { h: 'Estimates', p: ['Food values are approximate for home-style portions and will differ from what you actually eat.'] },
-      { h: 'Demo software', p: ['This is a free demo build provided as is, without warranty.'] },
+      { h: 'The app', p: ['efacm is free to use and is provided as is, without warranty.'] },
     ],
   },
   about: {
@@ -37,7 +37,7 @@ const TOPICS: { [key: string]: Topic } = {
     sections: [
       { h: 'Eat. Train. Track.', p: ['efacm is a simple meal, protein and water tracker for people who lift, built around Indian home food.'] },
       { h: 'Built with', p: ['Ionic 6, Angular 15 and Capacitor 4.'] },
-      { h: 'Version', p: ['1.0.0 (demo build)'] },
+      { h: 'Version', p: ['1.0.0'] },
     ],
   },
 };

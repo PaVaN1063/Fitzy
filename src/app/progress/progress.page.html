@@ -45,6 +45,11 @@
     </ng-template>
   </section>
 
+  <section class="card bmi">
+    <h2 class="card-title">Body mass index <span class="sub">{{ weightKg | number: '1.1-1' }} kg · {{ heightCm }} cm</span></h2>
+    <app-bmi-gauge [weightKg]="weightKg" [heightCm]="heightCm"></app-bmi-gauge>
+  </section>
+
   <section class="card">
     <h2 class="card-title">This week</h2>
     <div class="week">
@@ -64,16 +69,22 @@
     </ul>
   </section>
 
-  <section class="card demo">
-    <h2 class="card-title">Progress photos <span class="demo-badge">Demo</span></h2>
+  <section class="card">
+    <h2 class="card-title">Progress photos <span class="sub">Only saved on this phone</span></h2>
+    <input #photoInput class="file" type="file" accept="image/*" (change)="onPhoto(photoInput)" aria-hidden="true" tabindex="-1" />
     <div class="photos">
-      <div class="photo" *ngFor="let label of ['Front', 'Side', 'Back']">
-        <ion-icon name="body-outline"></ion-icon><span>{{ label }}</span>
+      <div class="photo" *ngFor="let s of slots" [class.has]="photos[s.id]">
+        <button class="photo-btn-area" type="button" (click)="pickPhoto(s.id, photoInput)" [attr.aria-label]="(photos[s.id] ? 'Replace ' : 'Add ') + s.label + ' photo'">
+          <img *ngIf="photos[s.id]" [src]="photos[s.id]?.dataUrl" [alt]="s.label + ' progress photo'" />
+          <ng-container *ngIf="!photos[s.id]"><ion-icon name="camera-outline"></ion-icon><span>{{ s.label }}</span></ng-container>
+        </button>
+        <div class="photo-meta" *ngIf="photos[s.id]">
+          <span>{{ s.label }} · {{ photoDate(s.id) }}</span>
+          <button type="button" (click)="removePhoto(s.id)" [attr.aria-label]="'Remove ' + s.label + ' photo'"><ion-icon name="close"></ion-icon></button>
+        </div>
       </div>
     </div>
-    <ion-button fill="outline" size="small" class="photo-btn" (click)="demoPhoto()">
-      <ion-icon slot="start" name="camera-outline"></ion-icon>Add photos
-    </ion-button>
+    <p class="photo-tip">Same spot, same light, every 2–4 weeks makes changes easy to see.</p>
   </section>
 
   <section class="card" *ngIf="history.length">

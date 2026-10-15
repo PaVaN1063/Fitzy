@@ -36,9 +36,13 @@
     <div class="facts">
       <div><span>BMR</span><b>{{ t.bmr | number }}</b><small>kcal at rest</small></div>
       <div><span>Maintenance</span><b>{{ t.tdee | number }}</b><small>kcal (TDEE)</small></div>
-      <div><span>BMI</span><b>{{ bmiValue }}</b><small>{{ bmiText }}</small></div>
       <div><span>Water</span><b>{{ waterRest / 1000 | number: '1.1-2' }}–{{ waterGym / 1000 | number: '1.1-2' }} L</b><small>rest–gym day</small></div>
     </div>
+  </section>
+
+  <section class="card bmi">
+    <h2 class="card-title">Body mass index</h2>
+    <app-bmi-gauge [weightKg]="clean.weightKg" [heightCm]="clean.heightCm"></app-bmi-gauge>
   </section>
 
   <!-- Form -->

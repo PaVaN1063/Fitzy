@@ -62,11 +62,31 @@ export function bmi(weightKg: number, heightCm: number): number {
   return m > 0 ? weightKg / (m * m) : 0;
 }
 
+export type BmiBand = 'under' | 'healthy' | 'over' | 'obese';
+
+/** WHO adult BMI bands (the gauge is drawn from 15 to 40). */
+export const BMI_BANDS: { id: BmiBand; label: string; from: number; to: number; color: string }[] = [
+  { id: 'under', label: 'Underweight', from: 15, to: 18.5, color: '#3b9ce8' },
+  { id: 'healthy', label: 'Healthy', from: 18.5, to: 25, color: '#1fb36f' },
+  { id: 'over', label: 'Overweight', from: 25, to: 30, color: '#f0a020' },
+  { id: 'obese', label: 'Obese', from: 30, to: 40, color: '#e5484d' },
+];
+
+export function bmiBand(value: number): BmiBand {
+  if (value < 18.5) { return 'under'; }
+  if (value < 25) { return 'healthy'; }
+  if (value < 30) { return 'over'; }
+  return 'obese';
+}
+
 export function bmiLabel(value: number): string {
-  if (value < 18.5) { return 'Underweight'; }
-  if (value < 25) { return 'Healthy range'; }
-  if (value < 30) { return 'Overweight'; }
-  return 'Obese range';
+  return BMI_BANDS.find(b => b.id === bmiBand(value))?.label ?? '';
+}
+
+/** Weight range (kg) that puts this height in the healthy BMI band. */
+export function healthyWeightRange(heightCm: number): { min: number; max: number } {
+  const m2 = (heightCm / 100) ** 2;
+  return { min: round1(18.5 * m2), max: round1(24.9 * m2) };
 }
 
 /**

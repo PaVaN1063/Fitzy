@@ -2,40 +2,45 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { addDays, fromKey, todayKey } from './dates';
-import { DEMO_SCAN_PRODUCTS, FOODS, fitsDiet } from './foods';
-import { DayLog, Food, LogEntry, MealType, Profile, Settings, Targets, WeightEntry } from './models';
+import { FOODS, SCAN_PRODUCTS, fitsDiet } from './foods';
+import { DayLog, Food, LogEntry, MealType, PhotoSlot, ProgressPhoto, Profile, Settings, Targets, WeightEntry } from './models';
 import { DEFAULT_PROTEIN_PER_KG, scaleMacros, sumMacros, targets } from './nutrition';
 
 interface AppState {
-  version: 2;
+  version: 4;
   profile: Profile;
   settings: Settings;
   days: { [date: string]: DayLog };
   weights: WeightEntry[];
   customFoods: Food[];
   recentFoodIds: string[];
+  photos: { [slot in PhotoSlot]?: ProgressPhoto };
 }
 
-const STORAGE_KEY = 'efacm.state.v3';
+const STORAGE_KEY = 'efacm.state.v4';
 
 /**
- * Sample account. Rahul is a made-up person; the email uses the reserved example.com
- * domain and the phone number is a common placeholder.
+ * When true, a new account starts with two weeks of realistic history (meals, water,
+ * weigh-ins ending at the weight the user entered) so every screen is filled in.
+ * Set to false to start new accounts empty.
  */
-export const DEMO_PROFILE: Profile = {
-  name: 'Rahul Varma',
-  phone: '9876543210',
-  email: 'rahul.varma@example.com',
-  city: 'Bengaluru',
+export const SEED_HISTORY = true;
+
+/** Profile before anyone has signed up on this phone. */
+export const BLANK_PROFILE: Profile = {
+  name: '',
+  phone: '',
+  email: '',
+  city: '',
   diet: 'nonveg',
-  memberSince: '2026-08-03',
+  memberSince: '',
   sex: 'male',
-  age: 27,
-  heightCm: 176,
-  weightKg: 74.6,
+  age: 25,
+  heightCm: 170,
+  weightKg: 70,
   activity: 'moderate',
-  goal: 'cut',
-  proteinPerKg: DEFAULT_PROTEIN_PER_KG.cut,
+  goal: 'maintain',
+  proteinPerKg: DEFAULT_PROTEIN_PER_KG.maintain,
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -65,7 +70,7 @@ export class TrackerService {
   readonly changes$: Observable<number> = this.changes.asObservable();
 
   constructor() {
-    this.state = this.load() ?? buildDemoState();
+    this.state = this.load() ?? emptyState();
     this.save();
   }
 
@@ -180,7 +185,7 @@ export class TrackerService {
   }
 
   recentFoods(): Food[] {
-    const all = [...this.allFoods(), ...DEMO_SCAN_PRODUCTS];
+    const all = [...this.allFoods(), ...SCAN_PRODUCTS];
     return this.state.recentFoodIds
       .map(id => all.find(f => f.id === id))
       .filter((f): f is Food => !!f);
@@ -235,33 +240,47 @@ export class TrackerService {
     return sumMacros(this.day(date).entries);
   }
 
-  // ---------- reset ----------
+  // ---------- progress photos ----------
 
-  resetToDemo(): void {
-    this.state = buildDemoState();
+  get photos(): { [slot in PhotoSlot]?: ProgressPhoto } {
+    return this.state.photos;
+  }
+
+  setPhoto(slot: PhotoSlot, dataUrl: string): void {
+    this.state.photos = { ...this.state.photos, [slot]: { dataUrl, date: todayKey() } };
     this.commit();
   }
+
+  removePhoto(slot: PhotoSlot): void {
+    const next = { ...this.state.photos };
+    delete next[slot];
+    this.state.photos = next;
+    this.commit();
+  }
+
+  // ---------- reset ----------
 
   /** Deletes all logs but keeps the account details and settings. */
   clearAll(): void {
-    this.state = { ...this.state, days: {}, weights: [], customFoods: [], recentFoodIds: [] };
+    this.state = { ...this.state, days: {}, weights: [], customFoods: [], recentFoodIds: [], photos: {} };
     this.commit();
   }
 
-  /** Starts a brand-new, empty account for a newly verified number. */
+  /** Starts a new account for a newly verified number. */
   startFreshAccount(details: Pick<Profile, 'phone' | 'name' | 'sex' | 'age' | 'heightCm' | 'weightKg'>): void {
-    this.state = {
-      version: 2,
-      profile: {
-        ...DEMO_PROFILE, ...details, email: '', city: '', diet: 'nonveg', memberSince: todayKey(),
-        activity: 'moderate', goal: 'maintain', proteinPerKg: DEFAULT_PROTEIN_PER_KG.maintain,
-      },
-      settings: { ...this.state.settings },
-      days: {},
-      weights: [],
-      customFoods: [],
-      recentFoodIds: [],
+    const profile: Profile = {
+      ...BLANK_PROFILE, ...details, memberSince: todayKey(),
+      activity: 'moderate', goal: 'maintain', proteinPerKg: DEFAULT_PROTEIN_PER_KG.maintain,
     };
+    const fresh: AppState = { ...emptyState(), settings: { ...this.state.settings }, profile };
+    if (SEED_HISTORY) {
+      const h = buildHistory(profile);
+      fresh.days = h.days;
+      fresh.weights = h.weights;
+      fresh.recentFoodIds = h.recent;
+      fresh.profile = { ...profile, memberSince: h.firstDay };
+    }
+    this.state = fresh;
     this.commit();
   }
 
@@ -282,7 +301,7 @@ export class TrackerService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) { return null; }
       const parsed = JSON.parse(raw) as AppState;
-      return parsed && parsed.version === 2 ? parsed : null;
+      return parsed && parsed.version === 4 ? parsed : null;
     } catch {
       return null;
     }
@@ -301,11 +320,24 @@ function uid(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
+function emptyState(): AppState {
+  return {
+    version: 4,
+    profile: { ...BLANK_PROFILE },
+    settings: { ...DEFAULT_SETTINGS },
+    days: {},
+    weights: [],
+    customFoods: [],
+    recentFoodIds: [],
+    photos: {},
+  };
+}
+
 /**
- * Sample data so every screen has something to show on first launch:
- * Rahul, three weeks into a fat-loss phase, logging home-style Indian meals.
+ * Two weeks of home-style Indian meals, water and morning weigh-ins for a new account.
+ * Weigh-ins drift gently down to the weight the user entered.
  */
-function buildDemoState(): AppState {
+function buildHistory(profile: Profile): { days: { [date: string]: DayLog }; weights: WeightEntry[]; recent: string[]; firstDay: string } {
   const today = todayKey();
   const find = (id: string): Food => FOODS.find(f => f.id === id) as Food;
   type Plan = [MealType, string, number][];
@@ -321,15 +353,18 @@ function buildDemoState(): AppState {
      ['snacks', 'chai', 1], ['dinner', 'chicken-curry', 1], ['dinner', 'roti', 3]],
   ];
   const mealHour: Record<MealType, number> = { breakfast: 8, lunch: 13, snacks: 17, dinner: 21 };
-
   const at = (date: string, hour: number, minute = 0): number => {
     const d = fromKey(date);
     d.setHours(hour, minute, 0, 0);
     return d.getTime();
   };
+  // The meal plans average about 2,000 kcal; scale portions so the history sits near this user's target.
+  const scale = Math.min(1.4, Math.max(0.7, targets(profile).kcal / 2000));
+  const portion = (qty: number): number => Math.max(0.5, Math.round(qty * scale * 2) / 2);
   const makeEntries = (date: string, plan: Plan): LogEntry[] =>
-    plan.map(([meal, id, qty], k) => {
+    plan.map(([meal, id, q], k) => {
       const f = find(id);
+      const qty = portion(q);
       return { id: uid() + date + k, foodId: id, name: f.name, serving: f.serving, meal, qty, at: at(date, mealHour[meal], k * 3), ...scaleMacros(f, qty) };
     });
 
@@ -345,29 +380,29 @@ function buildDemoState(): AppState {
     };
   }
 
-  // Today so far: breakfast and a post-workout shake.
+  // Today so far: whatever would have been eaten by now.
   const now = Date.now();
+  const hour = new Date().getHours();
+  const todayPlan: Plan = [['breakfast', 'oats-milk', 1], ['breakfast', 'boiled-egg', 3], ['lunch', 'roti', 3], ['lunch', 'toor-dal', 1], ['snacks', 'whey', 1]];
   days[today] = {
     date: today,
     gymDay: true,
-    entries: makeEntries(today, [['breakfast', 'oats-milk', 1], ['breakfast', 'boiled-egg', 3], ['snacks', 'whey', 1], ['snacks', 'banana', 1]])
-      .map((e, k) => ({ ...e, at: Math.min(e.at, now - (4 - k) * 600000) })),
-    water: [500, 250, 500, 250].map((ml, k) => ({ ml, at: now - (4 - k) * 2400000 })),
+    entries: makeEntries(today, todayPlan.filter(([meal]) => mealHour[meal] <= hour)),
+    water: [500, 250, 500, 250].slice(0, Math.max(1, Math.min(4, hour - 6))).map((ml, k) => ({ ml, at: now - (4 - k) * 2400000 })),
   };
 
-  // Three weeks of morning weigh-ins: about 0.7 kg a week down, with normal day-to-day swings.
-  const noise = [0.2, -0.1, 0.3, 0, -0.2, 0.4, 0.1, -0.1, 0.2, -0.3, 0.1, 0.3, -0.2, 0, 0.2, -0.1, 0.3, -0.2, 0.1, 0, -0.1];
+  // About three weeks of morning weigh-ins, a few skipped, ending at today's weight.
+  const noise = [0.2, -0.1, 0.3, 0, -0.2, 0.4, 0.1, -0.1, 0.2, -0.3, 0.1, 0.3, -0.2, 0, 0.2, -0.1, 0.3, -0.2, 0.1, 0, 0];
+  const end = profile.weightKg;
   const weights: WeightEntry[] = noise
-    .map((n, k) => ({ date: addDays(today, -(noise.length - 1 - k)), kg: Math.round((76.8 - k * 0.105 + n) * 10) / 10 }))
-    .filter((_, k) => k % 6 !== 4); // skipped a few mornings
+    .map((n, k) => ({ date: addDays(today, -(noise.length - 1 - k)), kg: Math.round((end + (noise.length - 1 - k) * 0.05 + n) * 10) / 10 }))
+    .filter((_, k) => k % 6 !== 4 || k === noise.length - 1);
+  weights[weights.length - 1] = { date: today, kg: end };
 
   return {
-    version: 2,
-    profile: { ...DEMO_PROFILE, memberSince: addDays(today, -73), weightKg: weights[weights.length - 1].kg },
-    settings: { ...DEFAULT_SETTINGS },
     days,
     weights,
-    customFoods: [],
-    recentFoodIds: ['whey', 'oats-milk', 'boiled-egg', 'roti', 'chicken-curry', 'chicken-breast', 'toor-dal', 'curd'],
+    recent: ['whey', 'oats-milk', 'boiled-egg', 'roti', 'chicken-curry', 'chicken-breast', 'toor-dal', 'curd'],
+    firstDay: weights[0].date,
   };
 }

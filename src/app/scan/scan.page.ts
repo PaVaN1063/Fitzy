@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { todayKey } from '../core/dates';
-import { DEMO_SCAN_PRODUCTS } from '../core/foods';
+import { SCAN_PRODUCTS } from '../core/foods';
 import { Food, MealType } from '../core/models';
 import { FoodSearchComponent } from '../shared/food-search.component';
 
@@ -12,8 +12,8 @@ type Mode = 'photo' | 'barcode';
 type Phase = 'ready' | 'scanning' | 'result';
 
 /**
- * DEMO ONLY. No camera is opened and nothing is looked up:
- * "capturing" waits briefly and then shows one of the sample products.
+ * Product scanner. TODO: recognition is not connected yet; capturing returns the next
+ * product from SCAN_PRODUCTS. Swap in ML Kit barcode scanning or a vision API here.
  */
 @Component({
   selector: 'app-scan',
@@ -66,7 +66,7 @@ export class ScanPage implements OnInit, OnDestroy {
     if (this.phase === 'scanning') { return; }
     this.phase = 'scanning';
     this.timer = setTimeout(() => {
-      this.result = DEMO_SCAN_PRODUCTS[this.next % DEMO_SCAN_PRODUCTS.length];
+      this.result = SCAN_PRODUCTS[this.next % SCAN_PRODUCTS.length];
       this.next++;
       this.phase = 'result';
     }, 1400);

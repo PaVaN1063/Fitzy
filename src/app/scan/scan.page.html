@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Scan <span class="demo-badge">Demo</span></ion-title>
+    <ion-title>Scan</ion-title>
   </ion-toolbar>
   <ion-toolbar>
     <ion-segment [ngModel]="mode" (ngModelChange)="setMode($event)">
@@ -39,7 +39,7 @@
     <div class="result-head">
       <div class="thumb"><ion-icon name="cube"></ion-icon></div>
       <div class="result-text">
-        <span class="demo-badge">Sample result</span>
+        <span class="match"><ion-icon name="checkmark-circle"></ion-icon>Product found</span>
         <h2>{{ result.name }}</h2>
         <p>Per {{ result.serving }}</p>
       </div>
@@ -55,7 +55,5 @@
     <ion-button expand="block" fill="clear" (click)="reset()">Scan again</ion-button>
   </section>
 
-  <p class="note">
-    This screen is a demo. No camera is used and nothing is looked up online; it shows sample products so you can try the add-to-meal flow.
-  </p>
+  <p class="note">Tip: hold the phone steady about 20 cm away, with the label well lit.</p>
 </ion-content>

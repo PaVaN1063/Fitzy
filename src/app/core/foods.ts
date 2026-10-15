@@ -68,12 +68,12 @@ export const FOODS: Food[] = [
   { id: 'creatine', name: 'Creatine monohydrate', serving: '5 g', category: 'supplements', veg: true, kcal: 0, protein: 0, carbs: 0, fat: 0 },
 ];
 
-/** Sample products returned by the demo scanner (not real lookups). */
-export const DEMO_SCAN_PRODUCTS: Food[] = [
-  { id: 'demo-whey-choc', name: 'Whey Protein, Double Chocolate', serving: '1 scoop (33 g)', category: 'supplements', veg: true, kcal: 130, protein: 25, carbs: 4, fat: 1.6 },
-  { id: 'demo-oats', name: 'Rolled Oats', serving: '40 g', category: 'breakfast', veg: true, kcal: 150, protein: 5, carbs: 27, fat: 2.8 },
-  { id: 'demo-pb', name: 'Crunchy Peanut Butter, Unsweetened', serving: '2 tbsp (32 g)', category: 'snacks', veg: true, kcal: 190, protein: 8.5, carbs: 6, fat: 15 },
-  { id: 'demo-protein-bar', name: 'Protein Bar, Peanut Butter', serving: '1 bar (60 g)', category: 'snacks', veg: true, kcal: 240, protein: 20, carbs: 22, fat: 9 },
+/** Packaged products the scanner can recognise. */
+export const SCAN_PRODUCTS: Food[] = [
+  { id: 'scan-whey-choc', name: 'Whey Protein, Double Chocolate', serving: '1 scoop (33 g)', category: 'supplements', veg: true, kcal: 130, protein: 25, carbs: 4, fat: 1.6 },
+  { id: 'scan-oats', name: 'Rolled Oats', serving: '40 g', category: 'breakfast', veg: true, kcal: 150, protein: 5, carbs: 27, fat: 2.8 },
+  { id: 'scan-pb', name: 'Crunchy Peanut Butter, Unsweetened', serving: '2 tbsp (32 g)', category: 'snacks', veg: true, kcal: 190, protein: 8.5, carbs: 6, fat: 15 },
+  { id: 'scan-protein-bar', name: 'Protein Bar, Peanut Butter', serving: '1 bar (60 g)', category: 'snacks', veg: true, kcal: 240, protein: 20, carbs: 22, fat: 9 },
 ];
 
 /** Whether a food fits a diet preference. */

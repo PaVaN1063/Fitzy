@@ -32,6 +32,16 @@ export interface Profile {
   goal: Goal;
   /** grams of protein per kg of body weight */
   proteinPerKg: number;
+  /** small JPEG data URL chosen by the user */
+  photo?: string;
+}
+
+export type PhotoSlot = 'front' | 'side' | 'back';
+
+export interface ProgressPhoto {
+  dataUrl: string;
+  /** YYYY-MM-DD */
+  date: string;
 }
 
 export interface Macros {
@@ -92,9 +102,9 @@ export interface Targets extends Macros {
 
 export interface Settings {
   theme: Theme;
-  /** Demo only: the app always calculates in kg and cm. */
+  /** reserved; the app currently uses kg and cm */
   units: Units;
-  /** Demo only: no notifications are scheduled. */
+  /** reminder preferences */
   notify: { meals: boolean; water: boolean; weekly: boolean };
 }
 

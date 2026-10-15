@@ -12,10 +12,16 @@
 
 <ion-content>
   <div class="photo">
-    <div class="avatar" aria-hidden="true">{{ initials }}</div>
-    <ion-button fill="clear" size="small" (click)="changePhoto()">
-      <ion-icon slot="start" name="camera-outline"></ion-icon>Change photo
-    </ion-button>
+    <label class="avatar" for="photo-input">
+      <img *ngIf="photo" [src]="photo" alt="Your profile photo" />
+      <span *ngIf="!photo" aria-hidden="true">{{ initials }}</span>
+      <span class="cam" aria-hidden="true"><ion-icon name="camera"></ion-icon></span>
+    </label>
+    <input #photoInput id="photo-input" class="file" type="file" accept="image/*" (change)="onPhoto(photoInput)" />
+    <div class="photo-actions">
+      <ion-button fill="clear" size="small" (click)="photoInput.click()">{{ photo ? 'Change photo' : 'Add photo' }}</ion-button>
+      <ion-button *ngIf="photo" fill="clear" size="small" color="medium" (click)="removePhoto()">Remove</ion-button>
+    </div>
   </div>
 
   <form class="card" (ngSubmit)="save()">
