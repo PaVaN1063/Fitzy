@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { addDays, fromKey, todayKey } from './dates';
 import { FOODS, SCAN_PRODUCTS, fitsDiet } from './foods';
 import { DayLog, Food, LogEntry, MealType, PhotoSlot, ProgressPhoto, Profile, Settings, Targets, WeightEntry } from './models';
-import { DEFAULT_PROTEIN_PER_KG, scaleMacros, sumMacros, targets } from './nutrition';
+import { DEFAULT_PROTEIN_PER_KG, scaleMacros, sumMacros, targets, waterGoalMl } from './nutrition';
 
 interface AppState {
   version: 4;
@@ -371,7 +371,9 @@ function buildHistory(profile: Profile): { days: { [date: string]: DayLog }; wei
   const days: { [date: string]: DayLog } = {};
   for (let i = 13; i >= 1; i--) {
     const date = addDays(today, -i);
-    const glasses = [9, 11, 8, 12, 10, 7, 11][i % 7];
+    // Water near this user's goal: most days met, a couple a little short.
+    const goalMl = waterGoalMl(profile.weightKg, i % 7 !== 0 && i % 7 !== 4);
+    const glasses = Math.round((goalMl * [1.02, 1.08, 0.86, 1.12, 1.0, 0.82, 1.05][i % 7]) / 300);
     days[date] = {
       date,
       entries: makeEntries(date, plans[i % plans.length]),
