@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="shift(-1)" aria-label="Previous day">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="shift(1)" [disabled]="isToday" aria-label="Next day">
+        <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="strip-bar">
+    <div class="strip">
+      <button *ngFor="let d of strip" class="strip-day" [class.on]="d.key === date" (click)="select(d.key)"
+              [attr.aria-label]="d.weekday + ' ' + d.day">
+        <span class="wd">{{ d.weekday }}</span>
+        <span class="dn">{{ d.day }}</span>
+        <span class="mark" [class.logged]="d.logged"></span>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Summary -->
+  <section class="card summary">
+    <div class="ring-row">
+      <app-ring [value]="totals.kcal" [max]="target.kcal" [size]="128" [stroke]="11">
+        <span class="ring-num">{{ (remaining >= 0 ? remaining : -remaining) | number: '1.0-0' }}</span>
+        <span class="ring-cap">{{ remaining >= 0 ? 'kcal left' : 'kcal over' }}</span>
+      </app-ring>
+      <div class="kcal-facts">
+        <div><span>Eaten</span><b>{{ totals.kcal | number: '1.0-0' }}</b></div>
+        <div><span>Target</span><b>{{ target.kcal | number: '1.0-0' }}</b></div>
+        <div class="gym">
+          <span>Gym day</span>
+          <ion-toggle [ngModel]="gymDay" (ngModelChange)="toggleGym($event)" aria-label="Gym day"></ion-toggle>
+        </div>
+      </div>
+    </div>
+    <div class="macro-list">
+      <app-macro-bar label="Protein" [value]="totals.protein" [max]="target.protein" color="var(--macro-protein)"></app-macro-bar>
+      <app-macro-bar label="Carbs" [value]="totals.carbs" [max]="target.carbs" color="var(--macro-carbs)"></app-macro-bar>
+      <app-macro-bar label="Fat" [value]="totals.fat" [max]="target.fat" color="var(--macro-fat)"></app-macro-bar>
+    </div>
+  </section>
+
+  <!-- Water shortcut -->
+  <section class="card water-row">
+    <ion-icon name="water" class="drop"></ion-icon>
+    <div class="water-text" routerLink="/tabs/water">
+      <b>{{ water | number }}</b> / {{ target.waterMl | number }} ml water
+      <div class="water-track"><div [style.width.%]="target.waterMl ? (water / target.waterMl) * 100 : 0"></div></div>
+    </div>
+    <ion-button size="small" fill="outline" color="secondary" (click)="quickWater()">+250 ml</ion-button>
+  </section>
+
+  <div class="copy" *ngIf="canCopyYesterday">
+    <ion-button fill="clear" size="small" (click)="copyYesterday()">
+      <ion-icon slot="start" name="copy-outline"></ion-icon>Same as the day before? Copy those meals
+    </ion-button>
+  </div>
+
+  <!-- Meals -->
+  <section class="card meal" *ngFor="let m of meals">
+    <header class="meal-head">
+      <ion-icon [name]="m.icon"></ion-icon>
+      <h2>{{ m.label }}</h2>
+      <span class="meal-kcal">{{ m.totals.kcal }} kcal</span>
+    </header>
+
+    <ion-list lines="inset" *ngIf="m.entries.length">
+      <ion-item *ngFor="let e of m.entries; trackBy: trackEntry">
+        <ion-label>
+          <h3>{{ e.name }}</h3>
+          <p>{{ e.qty }} × {{ e.serving }} · P {{ e.protein }} · C {{ e.carbs }} · F {{ e.fat }}</p>
+        </ion-label>
+        <ion-note slot="end" class="entry-kcal">{{ e.kcal }}</ion-note>
+        <ion-button slot="end" fill="clear" color="medium" (click)="remove(e)" [attr.aria-label]="'Remove ' + e.name">
+          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
+    <p class="meal-empty" *ngIf="!m.entries.length">Nothing logged yet.</p>
+
+    <ion-button fill="clear" size="small" class="add" (click)="addFood(m.id)">
+      <ion-icon slot="start" name="add-circle"></ion-icon>Add food
+    </ion-button>
+  </section>
+
+  <p class="foot-note">Values are estimates for home-style portions.</p>
+</ion-content>

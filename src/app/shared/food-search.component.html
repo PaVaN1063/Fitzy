@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button *ngIf="step !== 'list' && !preset" (click)="back()" aria-label="Back to food list">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <ng-container [ngSwitch]="step">
+        <span *ngSwitchCase="'custom'">New custom food</span>
+        <span *ngSwitchDefault>Add to {{ mealLabel }}</span>
+      </ng-container>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="step === 'list'">
+    <ion-segment [(ngModel)]="meal" [scrollable]="true">
+      <ion-segment-button *ngFor="let m of meals" [value]="m.id">
+        <ion-label>{{ m.label }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="step === 'list'">
+    <ion-searchbar [(ngModel)]="query" (ngModelChange)="filter()" placeholder="Search roti, dal, whey…"
+                   [debounce]="150" show-clear-button="focus"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- ===== Food list ===== -->
+  <ng-container *ngIf="step === 'list'">
+    <div class="chips">
+      <ion-chip *ngFor="let c of categories" [outline]="category !== c" [color]="category === c ? 'primary' : 'medium'"
+                (click)="setCategory(c)">
+        <ion-label class="cap">{{ c }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <p class="diet-note" *ngIf="dietNote">{{ dietNote }} · change in Profile › Diet preference</p>
+
+    <div class="actions">
+      <ion-button fill="outline" size="small" (click)="openScanner()">
+        <ion-icon slot="start" name="scan-outline"></ion-icon>Scan product
+      </ion-button>
+      <ion-button fill="outline" size="small" (click)="openCustom()">
+        <ion-icon slot="start" name="add"></ion-icon>Custom food
+      </ion-button>
+    </div>
+
+    <ion-list *ngIf="showRecent" lines="full">
+      <ion-list-header><ion-label>Recent</ion-label></ion-list-header>
+      <ion-item *ngFor="let f of recent; trackBy: trackFood" [button]="true" [detail]="false" (click)="pick(f)">
+        <span slot="start" class="dot" [class.nonveg]="!f.veg"></span>
+        <ion-label>
+          <h3>{{ f.name }}</h3>
+          <p>{{ f.serving }} · P {{ f.protein }} g</p>
+        </ion-label>
+        <ion-note slot="end" class="kcal">{{ f.kcal }} kcal</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list lines="full">
+      <ion-list-header>
+        <ion-label>{{ query.trim() ? 'Results' : 'All foods' }} <span class="count">{{ results.length }}</span></ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let f of results; trackBy: trackFood" [button]="true" [detail]="false" (click)="pick(f)">
+        <span slot="start" class="dot" [class.nonveg]="!f.veg"></span>
+        <ion-label>
+          <h3>{{ f.name }}</h3>
+          <p>{{ f.serving }} · P {{ f.protein }} · C {{ f.carbs }} · F {{ f.fat }}</p>
+        </ion-label>
+        <ion-note slot="end" class="kcal">{{ f.kcal }} kcal</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <div class="empty" *ngIf="results.length === 0">
+      <p>No food matches “{{ query }}”.</p>
+      <ion-button (click)="openCustom()">Add “{{ query || 'new food' }}” as a custom food</ion-button>
+    </div>
+  </ng-container>
+
+  <!-- ===== Quantity ===== -->
+  <div class="qty-step ion-padding" *ngIf="step === 'qty' && selected && preview">
+    <div class="food-head">
+      <span class="dot big" [class.nonveg]="!selected.veg"></span>
+      <div>
+        <h2>{{ selected.name }}</h2>
+        <p>1 serving = {{ selected.serving }}</p>
+      </div>
+    </div>
+
+    <div class="stepper">
+      <ion-button fill="outline" shape="round" (click)="changeQty(-0.5)" [disabled]="qty <= 0.5" aria-label="Less">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+      <div class="qty"><b>{{ qty }}</b><span>serving{{ qty === 1 ? '' : 's' }}</span></div>
+      <ion-button fill="outline" shape="round" (click)="changeQty(0.5)" aria-label="More">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="quick">
+      <ion-chip *ngFor="let q of quickQty" [outline]="qty !== q" [color]="qty === q ? 'primary' : 'medium'" (click)="qty = q">
+        <ion-label>{{ q }}×</ion-label>
+      </ion-chip>
+    </div>
+
+    <div class="preview">
+      <div class="big-kcal"><b>{{ preview.kcal }}</b> kcal</div>
+      <div class="macros">
+        <div><b>{{ preview.protein }} g</b><span>Protein</span></div>
+        <div><b>{{ preview.carbs }} g</b><span>Carbs</span></div>
+        <div><b>{{ preview.fat }} g</b><span>Fat</span></div>
+      </div>
+    </div>
+
+    <ion-segment [(ngModel)]="meal" [scrollable]="true" class="meal-pick">
+      <ion-segment-button *ngFor="let m of meals" [value]="m.id"><ion-label>{{ m.label }}</ion-label></ion-segment-button>
+    </ion-segment>
+
+    <ion-button expand="block" size="large" (click)="add()">Add to {{ mealLabel }}</ion-button>
+  </div>
+
+  <!-- ===== Custom food ===== -->
+  <form class="ion-padding" *ngIf="step === 'custom'" (ngSubmit)="saveCustom()">
+    <ion-list lines="full" class="form">
+      <ion-item>
+        <ion-label position="stacked">Food name</ion-label>
+        <ion-input name="name" [(ngModel)]="custom.name" placeholder="e.g. Mom's egg bhurji"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">One serving is</ion-label>
+        <ion-input name="serving" [(ngModel)]="custom.serving" placeholder="e.g. 1 plate, 100 g"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Protein (g)</ion-label>
+        <ion-input name="protein" type="number" inputmode="decimal" min="0" [(ngModel)]="custom.protein"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Carbs (g)</ion-label>
+        <ion-input name="carbs" type="number" inputmode="decimal" min="0" [(ngModel)]="custom.carbs"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Fat (g)</ion-label>
+        <ion-input name="fat" type="number" inputmode="decimal" min="0" [(ngModel)]="custom.fat"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Calories (kcal)</ion-label>
+        <ion-input name="kcal" type="number" inputmode="numeric" min="0" [(ngModel)]="custom.kcal"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-note class="hint">From the macros above: {{ customKcalHint }} kcal</ion-note>
+        <ion-button slot="end" fill="clear" size="small" (click)="useMacroKcal()">Use this</ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Vegetarian</ion-label>
+        <ion-toggle name="veg" slot="end" [(ngModel)]="custom.veg"></ion-toggle>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" type="submit" [disabled]="!customValid">Save and choose quantity</ion-button>
+  </form>
+</ion-content>

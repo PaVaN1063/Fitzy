@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Who -->
+  <section class="card who">
+    <div class="who-row">
+      <div class="avatar" aria-hidden="true">
+        <img *ngIf="profile.photo" [src]="profile.photo" alt="" />
+        <span *ngIf="!profile.photo">{{ initials }}</span>
+      </div>
+      <div class="who-text">
+        <h2>{{ profile.name }}</h2>
+        <p>{{ phone }}</p>
+        <p class="since" *ngIf="profile.email">{{ profile.email }}</p>
+        <p class="since">Member since {{ memberSince }}</p>
+      </div>
+      <ion-button fill="clear" routerLink="/tabs/profile/edit" aria-label="Edit profile">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="tags">
+      <span class="tag">{{ goalLabel }}</span>
+      <span class="tag">{{ dietLabel }}</span>
+      <span class="tag">{{ profile.weightKg }} kg · {{ profile.heightCm }} cm</span>
+      <span class="tag" *ngIf="profile.city">{{ profile.city }}</span>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stat"><ion-icon name="flame" class="hot"></ion-icon><b>{{ stats.streak }}</b><span>day streak</span></div>
+    <div class="stat"><ion-icon name="restaurant"></ion-icon><b>{{ stats.foodsLogged }}</b><span>foods logged</span></div>
+    <div class="stat"><ion-icon name="water" class="wet"></ion-icon><b>{{ stats.litres | number: '1.0-1' }}</b><span>litres drunk</span></div>
+  </section>
+
+  <!-- Health -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Health &amp; goals</ion-label></ion-list-header>
+    <ion-item [button]="true" routerLink="/tabs/profile/targets" [detail]="true">
+      <ion-icon name="body-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Body &amp; goals</h3>
+        <p>{{ kcal | number }} kcal · {{ protein }} g protein a day</p>
+      </ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="chooseDiet()" [detail]="true">
+      <ion-icon name="leaf-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Diet preference</h3>
+        <p>{{ dietLabel }} · filters food search</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Reminders -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Reminders</ion-label></ion-list-header>
+    <ion-item>
+      <ion-icon name="alarm-outline" slot="start"></ion-icon>
+      <ion-label><h3>Meal logging</h3><p>9 AM, 2 PM and 9 PM</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.meals" (ngModelChange)="setNotify('meals', $event)" aria-label="Meal logging reminders"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="water-outline" slot="start"></ion-icon>
+      <ion-label><h3>Drink water</h3><p>Every 2 hours, 8 AM to 10 PM</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.water" (ngModelChange)="setNotify('water', $event)" aria-label="Water reminders"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+      <ion-label><h3>Weekly report</h3><p>Sunday evening summary</p></ion-label>
+      <ion-toggle slot="end" [ngModel]="settings.notify.weekly" (ngModelChange)="setNotify('weekly', $event)" aria-label="Weekly report"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <!-- App -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>App</ion-label></ion-list-header>
+    <ion-item [button]="true" (click)="chooseTheme()" [detail]="true">
+      <ion-icon name="contrast-outline" slot="start"></ion-icon>
+      <ion-label><h3>Theme</h3><p>{{ themeLabel }}</p></ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="exportData()" [detail]="false">
+      <ion-icon name="copy-outline" slot="start"></ion-icon>
+      <ion-label><h3>Back up my data</h3><p>Copies your meals, water and weigh-ins</p></ion-label>
+    </ion-item>
+    <ion-item [button]="true" (click)="confirm('clear')" [detail]="false">
+      <ion-icon name="trash-outline" slot="start" color="danger"></ion-icon>
+      <ion-label color="danger"><h3>Delete all logs</h3></ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Support -->
+  <ion-list class="card group" lines="inset">
+    <ion-list-header><ion-label>Help &amp; info</ion-label></ion-list-header>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/help" [detail]="true">
+      <ion-icon name="help-circle-outline" slot="start"></ion-icon><ion-label>Help &amp; FAQ</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/privacy" [detail]="true">
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon><ion-label>Privacy</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/terms" [detail]="true">
+      <ion-icon name="document-text-outline" slot="start"></ion-icon><ion-label>Terms of use</ion-label>
+    </ion-item>
+    <ion-item [button]="true" routerLink="/tabs/profile/info/about" [detail]="true">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon><ion-label>About Fitzy</ion-label>
+      <ion-note slot="end">v{{ version }}</ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div class="logout">
+    <ion-button expand="block" fill="outline" color="danger" (click)="confirm('logout')">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>Log out
+    </ion-button>
+  </div>
+  <p class="foot">Fitzy v{{ version }}</p>
+</ion-content>

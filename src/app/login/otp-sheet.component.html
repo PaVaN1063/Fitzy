@@ -1,0 +1,42 @@
+<ion-content class="ion-padding otp" [scrollY]="false">
+  <div class="badge-wrap">
+    <div class="badge" [class.done]="state === 'success'">
+      <ion-icon *ngIf="state !== 'success'" name="chatbubble-ellipses"></ion-icon>
+      <svg *ngIf="state === 'success'" viewBox="0 0 52 52" class="tick" aria-hidden="true">
+        <path fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M14 27 l8 8 l16 -18"></path>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Enter the code</h2>
+  <p class="sub">
+    We sent a {{ slots.length }}-digit code to <b>{{ pretty }}</b>
+    <button class="link" type="button" (click)="editNumber()">Edit</button>
+  </p>
+
+  <div class="boxes" [class.shake]="state === 'error'" [class.ok]="state === 'success'" (click)="focus()">
+    <div *ngFor="let i of slots" class="box"
+         [class.filled]="i < code.length"
+         [class.active]="focused && i === code.length && state === 'typing'">
+      <span *ngIf="i < code.length" class="digit">{{ code.charAt(i) }}</span>
+      <span *ngIf="focused && i === code.length && state === 'typing'" class="caret"></span>
+    </div>
+    <input #codeInput class="hidden-input" type="text" inputmode="numeric" autocomplete="one-time-code"
+           [attr.maxlength]="slots.length" aria-label="Verification code"
+           (input)="onInput(codeInput.value)" (focus)="focused = true" (blur)="focused = false" />
+  </div>
+
+  <p class="status" [class.err]="state === 'error'" [class.good]="state === 'success'" aria-live="polite">{{ message }}</p>
+
+  <ion-button expand="block" size="large" class="verify" (click)="verify()"
+              [disabled]="code.length < slots.length || state === 'checking' || state === 'success'">
+    <ion-spinner *ngIf="state === 'checking'" name="crescent"></ion-spinner>
+    <span *ngIf="state !== 'checking'">{{ state === 'success' ? 'Verified' : 'Verify' }}</span>
+  </ion-button>
+
+  <div class="row">
+    <span class="resend">Didn't get it?</span>
+    <span class="resend" *ngIf="resendIn > 0">Resend in 0:{{ resendIn < 10 ? '0' + resendIn : resendIn }}</span>
+    <button class="link" type="button" *ngIf="resendIn === 0" (click)="resend()">Resend code</button>
+  </div>
+</ion-content>

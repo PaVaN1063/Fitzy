@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Progress</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="card log">
+    <ion-item lines="none">
+      <ion-input type="number" inputmode="decimal" placeholder="Today's weight (kg)" [(ngModel)]="newWeight"
+                 (keyup.enter)="save()" aria-label="Today's weight in kg"></ion-input>
+      <ion-button slot="end" (click)="save()" [disabled]="!newWeight">Save</ion-button>
+    </ion-item>
+  </section>
+
+  <section class="card">
+    <div class="stats">
+      <div><span>Latest</span><b>{{ latest !== null ? (latest | number: '1.1-1') : '–' }}</b><small>kg</small></div>
+      <div><span>7-day average</span><b>{{ avg7 !== null ? (avg7 | number: '1.1-1') : '–' }}</b><small>kg</small></div>
+      <div>
+        <span>2-week change</span>
+        <b [class.down]="change !== null && change < 0" [class.up]="change !== null && change > 0">
+          {{ change === null ? '–' : (change > 0 ? '+' : '') + (change | number: '1.1-1') }}
+        </b><small>kg</small>
+      </div>
+    </div>
+
+    <div class="chart-wrap" *ngIf="dots.length; else noChart">
+      <svg [attr.viewBox]="'0 0 ' + W + ' ' + H" class="chart" role="img" aria-label="Weight over the last two weeks">
+        <g *ngFor="let t of yTicks">
+          <line class="grid" [attr.x1]="PAD_L" [attr.x2]="W - PAD_R" [attr.y1]="t.y" [attr.y2]="t.y"></line>
+          <text class="tick" [attr.x]="PAD_L - 6" [attr.y]="t.y + 3" text-anchor="end">{{ t.label }}</text>
+        </g>
+        <text *ngFor="let l of xLabels" class="tick" [attr.x]="l.x" [attr.y]="H - 6" text-anchor="middle">{{ l.label }}</text>
+        <circle *ngFor="let d of dots" class="dot" [attr.cx]="d.x" [attr.cy]="d.y" r="3"></circle>
+        <path class="trend" [attr.d]="trendPath"></path>
+      </svg>
+      <div class="legend">
+        <span><i class="key-dot"></i>Daily weigh-in</span>
+        <span><i class="key-line"></i>7-day average</span>
+      </div>
+    </div>
+    <ng-template #noChart>
+      <p class="empty">Log your weight on two or more days to see the trend.</p>
+    </ng-template>
+  </section>
+
+  <section class="card bmi">
+    <h2 class="card-title">Body mass index <span class="sub">{{ weightKg | number: '1.1-1' }} kg · {{ heightCm }} cm</span></h2>
+    <app-bmi-gauge [weightKg]="weightKg" [heightCm]="heightCm"></app-bmi-gauge>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">This week</h2>
+    <div class="week">
+      <div><b>{{ week.avgKcal | number }}</b><span>avg kcal / {{ week.targetKcal | number }}</span></div>
+      <div><b>{{ week.avgProtein }} g</b><span>avg protein / {{ week.targetProtein }} g</span></div>
+      <div><b>{{ week.proteinDays }}/7</b><span>protein days</span></div>
+      <div><b>{{ week.gymDays }}/7</b><span>gym days</span></div>
+      <div><b>{{ week.waterDays }}/7</b><span>water goal met</span></div>
+      <div><b>{{ week.loggedDays }}/7</b><span>days logged</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Coach notes</h2>
+    <ul class="notes">
+      <li *ngFor="let n of notes">{{ n }}</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Progress photos <span class="sub">Only saved on this phone</span></h2>
+    <input #photoInput class="file" type="file" accept="image/*" (change)="onPhoto(photoInput)" aria-hidden="true" tabindex="-1" />
+    <div class="photos">
+      <div class="photo" *ngFor="let s of slots" [class.has]="photos[s.id]">
+        <button class="photo-btn-area" type="button" (click)="pickPhoto(s.id, photoInput)" [attr.aria-label]="(photos[s.id] ? 'Replace ' : 'Add ') + s.label + ' photo'">
+          <img *ngIf="photos[s.id]" [src]="photos[s.id]?.dataUrl" [alt]="s.label + ' progress photo'" />
+          <ng-container *ngIf="!photos[s.id]"><ion-icon name="camera-outline"></ion-icon><span>{{ s.label }}</span></ng-container>
+        </button>
+        <div class="photo-meta" *ngIf="photos[s.id]">
+          <span>{{ s.label }} · {{ photoDate(s.id) }}</span>
+          <button type="button" (click)="removePhoto(s.id)" [attr.aria-label]="'Remove ' + s.label + ' photo'"><ion-icon name="close"></ion-icon></button>
+        </div>
+      </div>
+    </div>
+    <p class="photo-tip">Same spot, same light, every 2–4 weeks makes changes easy to see.</p>
+  </section>
+
+  <section class="card" *ngIf="history.length">
+    <h2 class="card-title">Weigh-ins</h2>
+    <ion-list lines="inset">
+      <ion-item *ngFor="let h of history">
+        <ion-label>{{ h.label }}</ion-label>
+        <ion-note slot="end" class="kg">{{ h.kg | number: '1.1-1' }} kg</ion-note>
+        <ion-button slot="end" fill="clear" color="medium" (click)="remove(h.date)" [attr.aria-label]="'Delete ' + h.label">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>

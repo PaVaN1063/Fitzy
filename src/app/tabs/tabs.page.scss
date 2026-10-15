@@ -1,0 +1,25 @@
+ion-tab-bar {
+  --border: 1px solid var(--ion-color-step-100, #e6e8ec);
+  height: 62px;
+}
+
+ion-tab-button {
+  --color-selected: var(--ion-color-primary);
+  font-weight: 500;
+}
+
+.scan-fab {
+  width: 44px;
+  height: 44px;
+  margin-top: -18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.35);
+
+  ion-icon {
+    font-size: 22px;
+  }
+}

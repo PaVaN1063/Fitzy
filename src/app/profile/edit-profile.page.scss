@@ -1,0 +1,15 @@
+.photo { display: flex; flex-direction: column; align-items: center; padding: 20px 0 4px; }
+.avatar {
+  position: relative; width: 96px; height: 96px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: linear-gradient(150deg, #19b878, #0b7d52); color: #fff; font-size: 32px; font-weight: 700;
+  img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+}
+.cam {
+  position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--card-bg); color: var(--ion-color-primary); box-shadow: 0 2px 8px rgba(0, 0, 0, .2); font-size: 17px;
+}
+.file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.photo-actions { display: flex; gap: 4px; }
+.error { color: var(--ion-color-danger); font-size: 14px; margin: 0 20px; }
+.verified { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ion-color-primary); align-self: center; }
+.hint { color: var(--ion-color-medium); font-size: 13px; margin: 8px 20px 24px; }

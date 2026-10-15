@@ -1,30 +1,18 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './core/auth.guard';
+
 const routes: Routes = [
+  { path: '', redirectTo: 'splash', pathMatch: 'full' },
+  { path: 'splash', loadChildren: () => import('./splash/splash.module').then(m => m.SplashPageModule) },
+  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule) },
   {
-    path: '',
-    redirectTo: 'folder/Inbox',
-    pathMatch: 'full'
+    path: 'tabs',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
   },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  },
-  {
-    path: 'ion-refresher',
-    loadChildren: () => import('./ionic-Components/ion-refresher/ion-refresher.module').then( m => m.IonRefresherPageModule)
-  },
-  {
-    path: 'ion-modal',
-    loadChildren: () => import('./ionic-Components/ion-modal/ion-modal.module').then( m => m.IonModalPageModule)
-  },
-  {
-    path: 'delivery-steps',
-    loadChildren: () => import('./pages/Mods/delivery-steps/delivery-steps.module').then( m => m.DeliveryStepsPageModule)
-  }
-
-
+  { path: '**', redirectTo: 'splash' },
 ];
 
 @NgModule({

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Scan</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [ngModel]="mode" (ngModelChange)="setMode($event)">
+      <ion-segment-button value="photo"><ion-label>Product photo</ion-label></ion-segment-button>
+      <ion-segment-button value="barcode"><ion-label>Barcode</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="viewfinder" [class.barcode]="mode === 'barcode'" *ngIf="phase !== 'result'">
+    <div class="frame">
+      <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+      <div class="line" [class.fast]="phase === 'scanning'"></div>
+      <div class="bars" *ngIf="mode === 'barcode'" aria-hidden="true">
+        <span *ngFor="let w of [3,1,2,1,3,2,1,1,3,1,2,3,1,2,1,3,1,2,2,1,3,1]" [style.flex]="w"></span>
+      </div>
+      <ion-icon *ngIf="mode === 'photo'" name="cube-outline" class="ghost"></ion-icon>
+    </div>
+    <p class="hint">{{ phase === 'scanning' ? 'Reading…' : hint }}</p>
+  </div>
+
+  <div class="controls" *ngIf="phase !== 'result'">
+    <ion-button fill="clear" color="medium" (click)="capture()" [disabled]="phase === 'scanning'">
+      <ion-icon slot="start" name="images-outline"></ion-icon>Gallery
+    </ion-button>
+    <button class="shutter" (click)="capture()" [disabled]="phase === 'scanning'" aria-label="Capture">
+      <ion-spinner *ngIf="phase === 'scanning'" name="crescent"></ion-spinner>
+    </button>
+    <ion-button fill="clear" color="medium" [disabled]="true">
+      <ion-icon slot="start" name="flash-off-outline"></ion-icon>Flash
+    </ion-button>
+  </div>
+
+  <section class="card result" *ngIf="phase === 'result' && result">
+    <div class="result-head">
+      <div class="thumb"><ion-icon name="cube"></ion-icon></div>
+      <div class="result-text">
+        <span class="match"><ion-icon name="checkmark-circle"></ion-icon>Product found</span>
+        <h2>{{ result.name }}</h2>
+        <p>Per {{ result.serving }}</p>
+      </div>
+    </div>
+    <div class="facts">
+      <div><b>{{ result.kcal }}</b><span>kcal</span></div>
+      <div><b>{{ result.protein }} g</b><span>Protein</span></div>
+      <div><b>{{ result.carbs }} g</b><span>Carbs</span></div>
+      <div><b>{{ result.fat }} g</b><span>Fat</span></div>
+    </div>
+    <p class="check">Check the label: values can be per 100 g or per serving.</p>
+    <ion-button expand="block" (click)="addResult()">Choose quantity and add</ion-button>
+    <ion-button expand="block" fill="clear" (click)="reset()">Scan again</ion-button>
+  </section>
+
+  <p class="note">Tip: hold the phone steady about 20 cm away, with the label well lit.</p>
+</ion-content>

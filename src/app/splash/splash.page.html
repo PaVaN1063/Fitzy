@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true" [scrollY]="false" class="splash" (click)="next()">
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  </div>
+
+  <div class="center">
+    <div class="logo-wrap">
+      <span class="pulse" aria-hidden="true"></span>
+      <span class="pulse p2" aria-hidden="true"></span>
+      <img class="mark" src="assets/icon/emblem.png" alt="Fitzy logo" width="168" height="168" />
+    </div>
+    <h1 class="word" aria-label="Fitzy">
+      <span *ngFor="let l of letters; let i = index" [style.animation-delay.ms]="500 + i * 70" aria-hidden="true">{{ l }}</span>
+    </h1>
+    <p class="tag">
+      <span style="animation-delay: 950ms">Eat</span><i style="animation-delay: 1050ms"></i>
+      <span style="animation-delay: 1100ms">Train</span><i style="animation-delay: 1200ms"></i>
+      <span style="animation-delay: 1250ms">Track</span>
+    </p>
+  </div>
+
+  <div class="bottom">
+    <div class="loader" role="progressbar" aria-label="Loading"><div class="bar"></div></div>
+    <p class="status" aria-live="polite">{{ status }}<span class="dots"><b>.</b><b>.</b><b>.</b></span></p>
+    <p class="foot">Meal &amp; water tracker for lifters</p>
+    <p class="made">Made in India · v1.0.0</p>
+  </div>
+</ion-content>

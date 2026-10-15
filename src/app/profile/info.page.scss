@@ -1,0 +1,6 @@
+.brand {
+  display: flex; flex-direction: column; align-items: center; padding: 24px 0 4px;
+  img { border-radius: 22px; box-shadow: 0 6px 18px rgba(0, 0, 0, .14); }
+  h2 { margin: 12px 0 0; font-size: 24px; font-weight: 700; }
+}
+p { margin: 0 16px 14px; font-size: 15px; line-height: 1.55; color: var(--ion-color-step-700, #444); }

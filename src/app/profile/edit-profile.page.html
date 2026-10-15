@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/profile" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" [strong]="true">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="photo">
+    <label class="avatar" for="photo-input">
+      <img *ngIf="photo" [src]="photo" alt="Your profile photo" />
+      <span *ngIf="!photo" aria-hidden="true">{{ initials }}</span>
+      <span class="cam" aria-hidden="true"><ion-icon name="camera"></ion-icon></span>
+    </label>
+    <input #photoInput id="photo-input" class="file" type="file" accept="image/*" (change)="onPhoto(photoInput)" />
+    <div class="photo-actions">
+      <ion-button fill="clear" size="small" (click)="photoInput.click()">{{ photo ? 'Change photo' : 'Add photo' }}</ion-button>
+      <ion-button *ngIf="photo" fill="clear" size="small" color="medium" (click)="removePhoto()">Remove</ion-button>
+    </div>
+  </div>
+
+  <form class="card" (ngSubmit)="save()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label position="stacked">Full name</ion-label>
+        <ion-input name="name" [(ngModel)]="form.name" autocomplete="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Mobile number</ion-label>
+        <ion-input name="phone" [value]="form.phone" [disabled]="true"></ion-input>
+        <ion-note slot="end" class="verified"><ion-icon name="shield-checkmark"></ion-icon> Login number</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email (optional)</ion-label>
+        <ion-input name="email" type="email" inputmode="email" [(ngModel)]="form.email" autocomplete="email" placeholder="you@example.com"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="stacked">City (optional)</ion-label>
+        <ion-input name="city" [(ngModel)]="form.city" placeholder="e.g. Bengaluru"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+
+  <p class="error" *ngIf="error" role="alert">{{ error }}</p>
+  <p class="hint">Height, weight, age and goal are under Profile › Body &amp; goals.</p>
+</ion-content>
