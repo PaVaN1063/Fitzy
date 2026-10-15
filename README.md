@@ -117,6 +117,21 @@ New accounts start with two weeks of history fitted to the person's own targets,
 - Icons: [Ionicons](https://ionic.io/ionicons)
 - Food values: approximate, for home-style portions
 
+## Copyright
+
+© 2026 Pavan Kumar Naraharisetti. All rights reserved.
+
+The code is public so that anyone can see how the app is built. The code,
+design, the Fitzy name and the logo may not be copied, reused or published
+without my written permission. See [LICENSE](LICENSE) for details.
+
+Trek photos, organiser names and people in the app are sample content for
+demonstration only.
+
+If you'd like to use something from this project or work on it together,
+reach out on [GitHub](https://github.com/PaVaN1063).
+
+
 <div align="center">
 <br />
 <img src="src/assets/icon/logo.png" alt="Fitzy logo" width="56" />
