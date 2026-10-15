@@ -44,31 +44,6 @@ Most calorie apps are built for burgers and bagels. Fitzy is built for people wh
   <img src="docs/journey.png" alt="Sign-up flow in five steps: splash, mobile number, verification code, about you, and the Meals screen" width="100%" />
 </p>
 
-## Screens
-
-<table>
-  <tr>
-    <td align="center" width="33%"><img src="docs/screens/05-meals.png" alt="Meals: calorie ring and macro bars" width="240" /><br /><b>Today</b><br /><sub>Calories left, macros and water at a glance</sub></td>
-    <td align="center" width="33%"><img src="docs/screens/06-meals-log.png" alt="Meals: food log by meal" width="240" /><br /><b>Meal log</b><br /><sub>Breakfast, lunch, snacks and dinner</sub></td>
-    <td align="center" width="33%"><img src="docs/screens/07-food-search.png" alt="Food search sheet" width="240" /><br /><b>Add food</b><br /><sub>Search, filter by category, recent foods</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/screens/08-food-qty.png" alt="Choosing a portion" width="240" /><br /><b>Pick a portion</b><br /><sub>Half-serving steps with a live macro preview</sub></td>
-    <td align="center"><img src="docs/screens/09-water.png" alt="Water tracker" width="240" /><br /><b>Water</b><br /><sub>Glass fill, quick adds and a 7-day chart</sub></td>
-    <td align="center"><img src="docs/screens/10-progress.png" alt="Weight trend" width="240" /><br /><b>Progress</b><br /><sub>Daily weigh-ins and the 7-day average</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/screens/11-bmi.png" alt="BMI gauge and weekly summary" width="240" /><br /><b>BMI &amp; this week</b><br /><sub>Where you stand and how the week went</sub></td>
-    <td align="center"><img src="docs/screens/14-body-goals.png" alt="Body and goals calculator" width="240" /><br /><b>Body &amp; goals</b><br /><sub>Targets update as you type</sub></td>
-    <td align="center"><img src="docs/screens/13-profile.png" alt="Profile" width="240" /><br /><b>Profile</b><br /><sub>Streak, totals, reminders and settings</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/screens/12-scan.png" alt="Product scan result" width="240" /><br /><b>Scan</b><br /><sub>Point at a pack to add it</sub></td>
-    <td align="center"><img src="docs/screens/15-meals-dark.png" alt="Meals in dark theme" width="240" /><br /><b>Dark theme</b><br /><sub>Follows the phone, or pick light or dark</sub></td>
-    <td align="center"><img src="docs/screens/01-splash.png" alt="Splash screen" width="240" /><br /><b>Splash</b><br /><sub>Animated logo and loading bar</sub></td>
-  </tr>
-</table>
-
 ## How your targets are worked out
 
 | What | Formula |
